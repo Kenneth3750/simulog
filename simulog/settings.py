@@ -19,7 +19,7 @@ from dotenv import load_dotenv
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 load_dotenv()
-
+PUBLIC_IP = os.environ.get('PUBLIC_IP')
 SHARED_API_TOKEN = os.environ.get('TOKEN')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-vw)jjo#msu!kkpcqvcge)mtch1ut+ry!utq5u@$_qrxpsr97ze
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", "192.168.1.71"]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "192.168.1.71",  PUBLIC_IP ] 
 
 
 # Application definition
