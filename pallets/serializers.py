@@ -13,5 +13,21 @@ class PalletsSerializer(serializers.ModelSerializer):
         model = Pallet
         fields = '__all__'
 
+class PositionPalletsSerializer(serializers.Serializer):
+    pallet_id = serializers.IntegerField() # 1 for amr and 2 for eur
+    container_id = serializers.IntegerField() # 1 for teu, 2 for feu, 3 for teuhb, 4 for feuhb, 5 for refeer
+    box_length = serializers.FloatField()
+    box_width = serializers.FloatField()  
+    box_height = serializers.FloatField()
+    box_weight = serializers.FloatField()
 
-    
+class TotalPallersSerializer(serializers.Serializer):
+    number_of_packages = serializers.IntegerField()
+    boxes_per_pallet = serializers.IntegerField()
+
+class PalletCost(serializers.Serializer):
+    number_of_pallets = serializers.IntegerField()
+    pallet_cost = serializers.FloatField()
+
+class SumPalletCost(serializers.Serializer):
+    costs = serializers.ListField(child=serializers.FloatField())

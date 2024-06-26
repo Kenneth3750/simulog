@@ -14,3 +14,7 @@ class ContainerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Containers
         fields = '__all__'
+
+class TotalContainerSerializaer(serializers.Serializer):
+    number_of_pallets = serializers.IntegerField()
+    pallets_per_container = serializers.IntegerField()
