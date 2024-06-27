@@ -1,19 +1,19 @@
 import math
 
 def positions(pallet, container, box_lenght, box_width, box_height, box_weight):
-    pallet_lenght = pallet.length
-    pallet_width = pallet.width
-    pallet_height = pallet.height
+    pallet_lenght = pallet.length * 100
+    pallet_width = pallet.width * 100
+    pallet_height = pallet.height * 100
     if pallet.id == 1:
         pallet_max_weight = 1200
     else:
         pallet_max_weight = 1500
 
-    container_height = container.height
+    container_height = container.height * 100
 
-    box_lenght = box_lenght
-    box_width = box_width
-    box_height = box_height
+    box_lenght = box_lenght * 100
+    box_width = box_width * 100
+    box_height = box_height * 100
     box_weight = box_weight
 
 
@@ -21,11 +21,13 @@ def positions(pallet, container, box_lenght, box_width, box_height, box_weight):
         return None
     
     #position 1
+    print(container_height, box_height)
 
-    height = math.floor((container_height - 0.25 ) / box_height)
+    height = math.floor((container_height - 25 ) / box_height)
 
     large_1 = math.floor(pallet_lenght / box_lenght)
     width_1 = math.floor(pallet_width / box_width)
+    print(large_1, width_1, height)
 
 
     position_1_boxes = large_1 * width_1 * height
@@ -34,7 +36,7 @@ def positions(pallet, container, box_lenght, box_width, box_height, box_weight):
 
     if total_weight > pallet_max_weight:
         extra_weight = total_weight - pallet_max_weight
-        extra_boxes = math.ceil(extra_weight / box_weight)
+        extra_boxes = math.ceil( (extra_weight*100) / (box_weight*100))
         position_1_boxes = position_1_boxes - extra_boxes        
 
 
@@ -51,7 +53,7 @@ def positions(pallet, container, box_lenght, box_width, box_height, box_weight):
 
     if total_weight > pallet_max_weight:
         extra_weight = total_weight - pallet_max_weight
-        extra_boxes = math.ceil(extra_weight / box_weight)
+        extra_boxes = math.ceil( (extra_weight*100) / (box_weight*100))
         position_2_boxes = position_2_boxes - extra_boxes  
 
 
@@ -78,7 +80,7 @@ def positions(pallet, container, box_lenght, box_width, box_height, box_weight):
         total_weight = position_3_boxes * box_weight
         if total_weight > pallet_max_weight:
             extra_weight = total_weight - pallet_max_weight
-            extra_boxes = math.ceil(extra_weight / box_weight)
+            extra_boxes = math.ceil( (extra_weight*100) / (box_weight*100))
             position_3_boxes = position_3_boxes - extra_boxes
 
     return {

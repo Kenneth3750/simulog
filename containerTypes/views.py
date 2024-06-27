@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .serializers import ContainerSerializer, TotalContainerSerializaer
+from .serializers import ContainerSerializer, TotalContainerSerializer
 from .models import Containers, ContainerPalletsPosition
 from pallets.models import Pallet
 from rest_framework.response import Response
@@ -69,7 +69,7 @@ def getContainerPosition(request):
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def totalContainers(request):
-    serializer = TotalContainerSerializaer(data=request.data)
+    serializer = TotalContainerSerializer(data=request.data)
     if serializer.is_valid():
         number_of_pallets = serializer.data['number_of_pallets']
         pallets_per_container = serializer.data['pallets_per_container']
