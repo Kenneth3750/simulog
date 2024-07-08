@@ -71,8 +71,6 @@ MIDDLEWARE = [
     'simulog.middleware.SharedTokenMiddleware',
 ]
 
-CORS_ALLOW_ALL_ORIGINS = True
-
 ROOT_URLCONF = 'simulog.urls'
 
 TEMPLATES = [
