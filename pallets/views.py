@@ -40,6 +40,19 @@ def getPallets(request, id=None):
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def getPositions(request):
+    try:
+        request.data['pallet_id'] = int(request.data['pallet_id'])
+        request.data['container_id'] = int(request.data['container_id'])
+        request.data['box_length'] = float(request.data['box_length'])
+        request.data['box_width'] = float(request.data['box_width'])
+        request.data['box_height'] = float(request.data['box_height'])
+        request.data['box_weight'] = float(request.data['box_weight'])
+    except:
+        return Response(
+            {'status': 'error', 
+                'message': 'Invalid data: Could not convert to float'},
+            status=status.HTTP_400_BAD_REQUEST )
+    
     serializer = PositionPalletsSerializer(data=request.data)
     if serializer.is_valid():
         pallet_id = serializer.validated_data['pallet_id']
@@ -72,6 +85,15 @@ def getPositions(request):
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def totalPallets(request):
+    try:
+        request.data['number_of_packages'] = float(request.data['number_of_packages'])
+        request.data['boxes_per_pallet'] = float(request.data['boxes_per_pallet'])
+    except:
+        return Response(
+            {'status': 'error', 
+                'message': 'Invalid data: Could not convert to float'},
+            status=status.HTTP_400_BAD_REQUEST )
+
     serializer = TotalPallersSerializer(data=request.data)
     if serializer.is_valid():
         number_of_packages = serializer.validated_data['number_of_packages']
@@ -91,6 +113,15 @@ def totalPallets(request):
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def palletCost(request):
+    try:
+        request.data['number_of_pallets'] = float(request.data['number_of_pallets'])
+        request.data['pallet_cost'] = float(request.data['pallet_cost'])
+    except:
+        return Response(
+            {'status': 'error', 
+                'message': 'Invalid data: Could not convert to float'},
+            status=status.HTTP_400_BAD_REQUEST )
+
     serializer = PalletCost(data=request.data)
     if serializer.is_valid():
         number_of_pallets = serializer.validated_data['number_of_pallets']
@@ -109,6 +140,14 @@ def palletCost(request):
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def totalPalletCost(request):
+    try:
+        request.data['costs'] = [float(i) for i in request.data['costs']]
+    except:
+        return Response(
+            {'status': 'error', 
+                'message': 'Invalid data: Could not convert to float'},
+            status=status.HTTP_400_BAD_REQUEST )
+
     serializer = SumPalletCost(data=request.data)
     if serializer.is_valid():
         costs = serializer.validated_data['costs']
