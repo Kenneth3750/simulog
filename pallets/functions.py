@@ -21,13 +21,11 @@ def positions(pallet, container, box_lenght, box_width, box_height, box_weight):
         return None
     
     #position 1
-    print(container_height, box_height)
 
     height = math.floor((container_height - 25 ) / box_height)
 
     large_1 = math.floor(pallet_lenght / box_lenght)
     width_1 = math.floor(pallet_width / box_width)
-    print(large_1, width_1, height)
 
 
     position_1_boxes = large_1 * width_1 * height
@@ -69,8 +67,10 @@ def positions(pallet, container, box_lenght, box_width, box_height, box_weight):
 
     large_3 = large_2
     new_pallet_width = pallet_width - box_lenght
+    print(new_pallet_width)
     new_large_3 = math.floor(pallet_lenght / box_lenght)
     new_width_3 = math.floor(new_pallet_width / box_width)
+    print(new_large_3, new_width_3)
     if new_width_3 == 0:
         position_3_boxes = position_1_boxes
         large_3 = large_1

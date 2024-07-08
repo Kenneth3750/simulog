@@ -10,6 +10,10 @@ from math import floor, ceil
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def netWeight(request):
+    request.data['product_weight'] = float(request.data['product_weight'])
+    request.data['number_of_products'] = float(request.data['number_of_products'])
+    request.data['products_per_pack'] = float(request.data['products_per_pack'])
+    request.data['package_weight'] = float(request.data['package_weight'])
     serializer = ProductWeightSerializer(data=request.data)
     if serializer.is_valid():
         product_weight = serializer.validated_data['product_weight']
