@@ -83,6 +83,8 @@ def positions(pallet, container, box_lenght, box_width, box_height, box_weight):
             extra_boxes = math.ceil( (extra_weight*100) / (box_weight*100))
             position_3_boxes = position_3_boxes - extra_boxes
 
+
+    max_position = max(position_1_boxes, position_2_boxes, position_3_boxes)
     return {
         'position_1': {
             'boxes': position_1_boxes,
@@ -102,7 +104,8 @@ def positions(pallet, container, box_lenght, box_width, box_height, box_weight):
             'large': None,
             'width': None,
             'height': height
-        }
+        },
+        'max_position': max_position
     }
 
     
