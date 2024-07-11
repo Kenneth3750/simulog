@@ -72,7 +72,9 @@ def getPositions(request):
         print(result)
         if result:
             return Response(
-                result,
+                {'status': 'success',
+                 "data": result}
+                ,
                 status=status.HTTP_200_OK )
         else:
 
