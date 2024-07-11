@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .serializers import ContainerSerializer, TotalContainerSerializer
+from .serializers import ContainerSerializer, TotalContainerSerializer, positionContainerSerializer
 from .models import Containers, ContainerPalletsPosition
 from pallets.models import Pallet
 from rest_framework.response import Response
@@ -35,13 +35,18 @@ def getContainer(request, id=None):
                 'data': serializer.data},
             status=status.HTTP_200_OK)
     
-@api_view(['GET'])
+@api_view(['POST'])
 @permission_classes([AllowAny])
 def getContainerPosition(request):
-    pallet_id = request.query_params.get('pallet_id')
-    container_id = request.query_params.get('container_id')
+    request.data['pallet_id'] = int(request.data['pallet_id'])
+    request.data['container_id'] = int(request.data['container_id'])
+    request.data['number_of_pallets'] = int(request.data['number_of_pallets'])
+    serializer = positionContainerSerializer(data=request.data)
     
-    if pallet_id and container_id:
+    if serializer.is_valid():
+        pallet_id = serializer.data['pallet_id']
+        container_id = serializer.data['container_id']
+        number_of_pallets = serializer.data['number_of_pallets']
         try:
             container = Containers.objects.get(id=container_id)
             pallet = Pallet.objects.get(id=pallet_id)
@@ -52,6 +57,8 @@ def getContainerPosition(request):
             large2, width2, total2 = position2['large'], position2['width'], position2['total']
             position3 = json.loads(position.position_3)
             large3, width3, total3 = position3['large'], position3['width'], position3['total']
+            max_position = max(total1, total2, total3)
+            total_containers = math.ceil(number_of_pallets / max_position)
             return Response(
                 {'status': 'success',
                  "large1": large1,
@@ -62,7 +69,9 @@ def getContainerPosition(request):
                  "total2": total2,
                  "large3": large3,
                  "width3": width3,
-                 "total3": total3
+                 "total3": total3,
+                 "max_position": max_position,
+                 "total_containers": total_containers
                  },
                 status=status.HTTP_200_OK)
         except ContainerPalletsPosition.DoesNotExist:

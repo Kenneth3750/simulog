@@ -18,3 +18,9 @@ class ContainerSerializer(serializers.ModelSerializer):
 class TotalContainerSerializer(serializers.Serializer):
     number_of_pallets = serializers.IntegerField()
     pallets_per_container = serializers.IntegerField()
+
+
+class positionContainerSerializer(serializers.Serializer):
+    pallet_id = serializers.IntegerField()
+    container_id = serializers.IntegerField()
+    number_of_pallets = serializers.IntegerField()

@@ -56,6 +56,7 @@ def getPositions(request):
             status=status.HTTP_400_BAD_REQUEST )
     
     serializer = PositionPalletsSerializer(data=request.data)
+    print(serializer)
     if serializer.is_valid():
         pallet_id = serializer.validated_data['pallet_id']
         container_id = serializer.validated_data['container_id']
