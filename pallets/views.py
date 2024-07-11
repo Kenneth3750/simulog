@@ -72,8 +72,7 @@ def getPositions(request):
         print(result)
         if result:
             return Response(
-                {'status': 'success', 
-                    'data': result},
+                result,
                 status=status.HTTP_200_OK )
         else:
 
@@ -87,7 +86,7 @@ def getPositions(request):
         return Response(
             {'status': 'error', 
                 'message': serializer.errors},
-            status=status.HTTP_200_OK)
+            status=status.HTTP_400_BAD_REQUEST )
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
