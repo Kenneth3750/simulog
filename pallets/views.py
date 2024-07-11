@@ -47,6 +47,7 @@ def getPositions(request):
         request.data['box_width'] = float(request.data['box_width'])
         request.data['box_height'] = float(request.data['box_height'])
         request.data['box_weight'] = float(request.data['box_weight'])
+        request.data['number_of_packages'] = int(request.data['number_of_packages'])
     except:
         return Response(
             {'status': 'error', 
@@ -61,9 +62,10 @@ def getPositions(request):
         box_width = serializer.validated_data['box_width']
         box_height = serializer.validated_data['box_height']
         box_weight = serializer.validated_data['box_weight']
+        number_of_packages = serializer.validated_data['number_of_packages']
         pallet = Pallet.objects.get(id=pallet_id)
         container = Containers.objects.get(id=container_id)
-        result = positions(pallet, container, box_length, box_width, box_height, box_weight)
+        result = positions(pallet, container, box_length, box_width, box_height, box_weight, number_of_packages)
         print(result)
         if result:
             return Response(
@@ -73,7 +75,7 @@ def getPositions(request):
         else:
             return Response(
                 {'status': 'error', 
-                    'message': 'Invalid data'},
+                    'message': 'The dimensions of the box are too big for the pallet or container'},
                 status=status.HTTP_400_BAD_REQUEST )
 
     else:

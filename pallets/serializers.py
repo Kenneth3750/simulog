@@ -20,6 +20,7 @@ class PositionPalletsSerializer(serializers.Serializer):
     box_width = serializers.FloatField()  
     box_height = serializers.FloatField()
     box_weight = serializers.FloatField()
+    number_of_packages = serializers.IntegerField()
 
 class TotalPallersSerializer(serializers.Serializer):
     number_of_packages = serializers.IntegerField()

@@ -1,9 +1,10 @@
 import math
 
-def positions(pallet, container, box_lenght, box_width, box_height, box_weight):
+def positions(pallet, container, box_lenght, box_width, box_height, box_weight, number_of_packages):
     pallet_lenght = pallet.length * 100
     pallet_width = pallet.width * 100
     pallet_height = pallet.height * 100
+    number_of_packages = number_of_packages
     if pallet.id == 1:
         pallet_max_weight = 1200
     else:
@@ -85,6 +86,7 @@ def positions(pallet, container, box_lenght, box_width, box_height, box_weight):
 
 
     max_position = max(position_1_boxes, position_2_boxes, position_3_boxes)
+    total_pallets = math.ceil(number_of_packages / max_position)
     return {
         'position_1': {
             'boxes': position_1_boxes,
@@ -105,7 +107,8 @@ def positions(pallet, container, box_lenght, box_width, box_height, box_weight):
             'width': None,
             'height': height
         },
-        'max_position': max_position
+        'max_position': max_position,
+        'total_pallets': total_pallets
     }
 
     
