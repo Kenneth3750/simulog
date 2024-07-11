@@ -47,13 +47,23 @@ def getContainerPosition(request):
             pallet = Pallet.objects.get(id=pallet_id)
             position = ContainerPalletsPosition.objects.get(pallet_id=pallet, container_id=container)
             position1 = json.loads(position.position_1)
+            large1, width1, total1 = position1['large'], position1['width'], position1['total']
             position2 = json.loads(position.position_2)
+            large2, width2, total2 = position2['large'], position2['width'], position2['total']
             position3 = json.loads(position.position_3)
+            large3, width3, total3 = position3['large'], position3['width'], position3['total']
             return Response(
                 {'status': 'success',
-                 'position_1': position1,
-                 'position_2': position2,
-                 'position_3': position3},
+                 "large1": large1,
+                 "width1": width1,
+                 "total1": total1,
+                 "large2": large2,
+                 "width2": width2,
+                 "total2": total2,
+                 "large3": large3,
+                 "width3": width3,
+                 "total3": total3
+                 },
                 status=status.HTTP_200_OK)
         except ContainerPalletsPosition.DoesNotExist:
             return Response(

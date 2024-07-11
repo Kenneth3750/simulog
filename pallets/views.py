@@ -48,6 +48,7 @@ def getPositions(request):
         request.data['box_height'] = float(request.data['box_height'])
         request.data['box_weight'] = float(request.data['box_weight'])
         request.data['number_of_packages'] = int(request.data['number_of_packages'])
+        request.data['pallet_cost'] = float(request.data['pallet_cost'])
     except:
         return Response(
             {'status': 'error', 
@@ -63,9 +64,10 @@ def getPositions(request):
         box_height = serializer.validated_data['box_height']
         box_weight = serializer.validated_data['box_weight']
         number_of_packages = serializer.validated_data['number_of_packages']
+        pallet_cost = serializer.validated_data['pallet_cost']
         pallet = Pallet.objects.get(id=pallet_id)
         container = Containers.objects.get(id=container_id)
-        result = positions(pallet, container, box_length, box_width, box_height, box_weight, number_of_packages)
+        result = positions(pallet, container, box_length, box_width, box_height, box_weight, number_of_packages, pallet_cost)
         print(result)
         if result:
             return Response(

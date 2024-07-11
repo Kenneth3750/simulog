@@ -1,6 +1,6 @@
 import math
 
-def positions(pallet, container, box_lenght, box_width, box_height, box_weight, number_of_packages):
+def positions(pallet, container, box_lenght, box_width, box_height, box_weight, number_of_packages, pallet_cost):
     pallet_lenght = pallet.length * 100
     pallet_width = pallet.width * 100
     pallet_height = pallet.height * 100
@@ -87,6 +87,7 @@ def positions(pallet, container, box_lenght, box_width, box_height, box_weight, 
 
     max_position = max(position_1_boxes, position_2_boxes, position_3_boxes)
     total_pallets = math.ceil(number_of_packages / max_position)
+    total_pallets_cost = total_pallets * pallet_cost
     return {
   
         'boxes1': position_1_boxes,
@@ -105,7 +106,8 @@ def positions(pallet, container, box_lenght, box_width, box_height, box_weight, 
         'width3': None,
         'height3': height,
         'max_position': max_position,
-        'total_pallets': total_pallets
+        'total_pallets': total_pallets,
+        'total_pallets_cost': total_pallets_cost
     }
 
     
