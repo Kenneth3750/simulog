@@ -87,7 +87,7 @@ def getPositions(request):
         return Response(
             {'status': 'error', 
                 'message': serializer.errors},
-            status=status.HTTP_400_BAD_REQUEST )
+            status=status.HTTP_200_OK)
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
