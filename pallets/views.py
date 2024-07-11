@@ -78,7 +78,7 @@ def getPositions(request):
 
             return Response(
                 {'status': 'error', 
-                    'message': 'The dimensions of the box are too big for the pallet or container'},
+                    'message': 'The dimensions or the weight of the box are too big for the pallet or container'},
                 status=status.HTTP_400_BAD_REQUEST )
 
     else:

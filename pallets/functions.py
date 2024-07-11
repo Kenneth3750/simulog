@@ -18,7 +18,7 @@ def positions(pallet, container, box_lenght, box_width, box_height, box_weight, 
     box_weight = box_weight
 
 
-    if (pallet_lenght < box_lenght or pallet_width < box_width or container_height < box_height):
+    if (pallet_lenght < box_lenght or pallet_width < box_width or container_height < box_height or pallet_max_weight < box_weight):
         return None
     
     #position 1
@@ -84,8 +84,10 @@ def positions(pallet, container, box_lenght, box_width, box_height, box_weight, 
             extra_boxes = math.ceil( (extra_weight*100) / (box_weight*100))
             position_3_boxes = position_3_boxes - extra_boxes
 
-
+    print(position_1_boxes, position_2_boxes, position_3_boxes)
+    print("--------------")
     max_position = max(position_1_boxes, position_2_boxes, position_3_boxes)
+    print(max_position)
     total_pallets = math.ceil(number_of_packages / max_position)
     total_pallets_cost = total_pallets * pallet_cost
     return {
