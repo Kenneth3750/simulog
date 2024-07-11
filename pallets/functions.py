@@ -88,25 +88,22 @@ def positions(pallet, container, box_lenght, box_width, box_height, box_weight, 
     max_position = max(position_1_boxes, position_2_boxes, position_3_boxes)
     total_pallets = math.ceil(number_of_packages / max_position)
     return {
-        'position_1': {
-            'boxes': position_1_boxes,
-            'large': large_1,
-            'width': width_1,
-            'height': height
-        },
-        'position_2': {
-            'boxes': position_2_boxes,
-            'large': large_2,
-            'width': width_2,
-            'height': height
-        
-        },
-        'position_3': {
-            'boxes': position_3_boxes,
-            'large': None,
-            'width': None,
-            'height': height
-        },
+  
+        'boxes1': position_1_boxes,
+        'large1': large_1,
+        'width1': width_1,
+        'height1': height,
+
+
+        'boxes2': position_2_boxes,
+        'large2': large_2,
+        'width2': width_2,
+        'height2': height,
+    
+        'boxes3': position_3_boxes,
+        'large3': None,
+        'width3': None,
+        'height3': height,
         'max_position': max_position,
         'total_pallets': total_pallets
     }
