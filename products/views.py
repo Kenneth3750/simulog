@@ -47,6 +47,11 @@ def netWeight(request):
 def totalVolumePerProduct(request):
     serializer = TotalVolumeSerializer(data=request.data)
     if serializer.is_valid():
+        if serializer.validated_data["width"] > serializer.validated_data["length"]:
+            return Response(
+                {'status': 'error', 
+                'message': 'Width must be less than length'},
+                status=status.HTTP_400_BAD_REQUEST )
         total_boxes = serializer.validated_data['number_of_packages']
         total_volume = total_boxes * serializer.validated_data['box_length'] * serializer.validated_data['box_width'] * serializer.validated_data['box_height']
         total_volume = round(total_volume, 2)

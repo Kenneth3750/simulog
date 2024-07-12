@@ -16,10 +16,7 @@ class TotalVolumeSerializer(serializers.Serializer):
     box_height = serializers.FloatField(validators=[greater_than_zero])
     number_of_packages = serializers.IntegerField(validators=[greater_than_zero])
 
-    def validate(self, data):
-        if data['box_width'] > data['box_length']:
-            raise serializers.ValidationError('Length must be greater than width')
-        return data
+
 
 
 class SumTotalVolumeSerializer(serializers.Serializer):
