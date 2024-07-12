@@ -79,7 +79,7 @@ def getContainerPosition(request):
     else:
         return Response(
             {'status': 'error',
-                'message': 'Invalid data'},
+                'message': serializer.errors},
             status=status.HTTP_400_BAD_REQUEST)
     
 @api_view(['POST'])
@@ -97,5 +97,5 @@ def totalContainers(request):
     else:
         return Response(
             {'status': 'error',
-             'message': 'Invalid data'},
+             'message': serializer.errors},
             status=status.HTTP_400_BAD_REQUEST)

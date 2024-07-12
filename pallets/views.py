@@ -89,7 +89,7 @@ def totalPallets(request):
     else:
         return Response(
             {'status': 'error', 
-                'message': 'Invalid data'},
+                'message': serializer.errors},
             status=status.HTTP_400_BAD_REQUEST )
     
 
@@ -108,7 +108,7 @@ def palletCost(request):
     else:
         return Response(
             {'status': 'error', 
-                'message': 'Invalid data'},
+                'message': serializer.errors},
             status=status.HTTP_400_BAD_REQUEST )
     
 @api_view(['POST'])
@@ -125,5 +125,5 @@ def totalPalletCost(request):
     else:
         return Response(
             {'status': 'error', 
-                'message': 'Invalid data'},
+                'message': serializer.errors},
             status=status.HTTP_400_BAD_REQUEST )

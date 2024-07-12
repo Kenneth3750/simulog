@@ -39,7 +39,7 @@ def netWeight(request):
     else:
         return Response(
             {'status': 'error', 
-            'message': 'Invalid data'},
+            'message': serializer.errors},
             status=status.HTTP_400_BAD_REQUEST )
 
 @api_view(['POST'])
@@ -47,12 +47,6 @@ def netWeight(request):
 def totalVolumePerProduct(request):
     serializer = TotalVolumeSerializer(data=request.data)
     if serializer.is_valid():
-        if serializer.validated_data['box_width'] > serializer.validated_data['box_length']:
-            return Response(
-                {'status': 'error', 
-                'message': 'Box length must be greater than box width'},
-                status=status.HTTP_400_BAD_REQUEST )
-        
         total_boxes = serializer.validated_data['number_of_packages']
         total_volume = total_boxes * serializer.validated_data['box_length'] * serializer.validated_data['box_width'] * serializer.validated_data['box_height']
         total_volume = round(total_volume, 2)
@@ -63,7 +57,7 @@ def totalVolumePerProduct(request):
     else:
         return Response(
             {'status': 'error', 
-            'message': 'Invalid data'},
+            'message': serializer.errors},
             status=status.HTTP_400_BAD_REQUEST )
     
 @api_view(['POST'])
@@ -80,7 +74,7 @@ def totalVolume(request):
     else:
         return Response(
             {'status': 'error', 
-            'message': 'Invalid data'},
+            'message': serializer.errors},
             status=status.HTTP_400_BAD_REQUEST )
 
 @api_view(['POST'])
@@ -96,7 +90,7 @@ def totalCostPerProduct(request):
     else:
         return Response(
             {'status': 'error', 
-            'message': 'Invalid data'},
+            'message': serializer.errors},
             status=status.HTTP_400_BAD_REQUEST )
     
 @api_view(['POST'])
@@ -112,7 +106,7 @@ def totalCost(request):
     else:
         return Response(
             {'status': 'error', 
-            'message': 'Invalid data'},
+            'message': serializer.errors},
             status=status.HTTP_400_BAD_REQUEST )
     
 @api_view(['POST'])
@@ -130,7 +124,7 @@ def totalTagPerProduct(request):
     else:
         return Response(
             {'status': 'error', 
-            'message': 'Invalid data'},
+            'message': serializer.errors},
             status=status.HTTP_400_BAD_REQUEST )
     
 @api_view(['POST'])
@@ -147,7 +141,7 @@ def totalTag(request):
     else:
         return Response(
             {'status': 'error', 
-            'message': 'Invalid data'},
+            'message': serializer.errors},
             status=status.HTTP_400_BAD_REQUEST )
 
     
