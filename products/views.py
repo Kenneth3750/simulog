@@ -39,7 +39,7 @@ def netWeight(request):
         # else:
         #     total_net_weight = (complete_packages*unit_net_weight + (remaining_products*product_weight) + package_weight)
 
-        total_net_weight = (number_of_packages*unit_net_weight)
+        total_net_weight = round((number_of_packages*unit_net_weight),2)
         return Response(
             {'status': 'success', 
             'unit_net_weight': unit_net_weight,
@@ -70,7 +70,7 @@ def totalVolumePerProduct(request):
     if serializer.is_valid():
         total_boxes = serializer.validated_data['number_of_packages']
         total_volume = total_boxes * serializer.validated_data['box_length'] * serializer.validated_data['box_width'] * serializer.validated_data['box_height']
-
+        total_volume = round(total_volume, 2)
         return Response(
             {'status': 'success', 
             'total_volume': total_volume},
@@ -94,6 +94,7 @@ def totalVolume(request):
     serializer = SumTotalVolumeSerializer(data=request.data)
     if serializer.is_valid():
         total_volume = sum(serializer.validated_data['volumes'])
+        total_volume = round(total_volume, 2)
         return Response(
             {'status': 'success', 
             'total_volume': total_volume},
