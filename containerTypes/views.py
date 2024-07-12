@@ -64,8 +64,8 @@ def getContainerPosition(request):
                  "large2": large2,
                  "width2": width2,
                  "total2": total2,
-                 "large3": large3,
-                 "width3": width3,
+                 "large3": 0,
+                 "width3": 0,
                  "total3": total3,
                  "max_position": max_position,
                  "total_containers": total_containers
