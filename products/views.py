@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from math import floor, ceil
-
+import json
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
@@ -39,7 +39,7 @@ def netWeight(request):
     else:
         return Response(
             {'status': 'error', 
-            'message': serializer.errors},
+            'message': json.dumps(serializer.errors)},
             status=status.HTTP_400_BAD_REQUEST )
 
 @api_view(['POST'])
@@ -62,7 +62,7 @@ def totalVolumePerProduct(request):
     else:
         return Response(
             {'status': 'error', 
-            'message': serializer.errors},
+            'message': json.dumps(serializer.errors)},
             status=status.HTTP_400_BAD_REQUEST )
     
 @api_view(['POST'])
@@ -79,7 +79,7 @@ def totalVolume(request):
     else:
         return Response(
             {'status': 'error', 
-            'message': serializer.errors},
+            'message': json.dumps(serializer.errors)},
             status=status.HTTP_400_BAD_REQUEST )
 
 @api_view(['POST'])
@@ -95,7 +95,7 @@ def totalCostPerProduct(request):
     else:
         return Response(
             {'status': 'error', 
-            'message': serializer.errors},
+            'message': json.dumps(json.dumps(serializer.errors))},
             status=status.HTTP_400_BAD_REQUEST )
     
 @api_view(['POST'])
@@ -111,7 +111,7 @@ def totalCost(request):
     else:
         return Response(
             {'status': 'error', 
-            'message': serializer.errors},
+            'message': json.dumps(serializer.errors)},
             status=status.HTTP_400_BAD_REQUEST )
     
 @api_view(['POST'])
@@ -129,7 +129,7 @@ def totalTagPerProduct(request):
     else:
         return Response(
             {'status': 'error', 
-            'message': serializer.errors},
+            'message': json.dumps(serializer.errors)},
             status=status.HTTP_400_BAD_REQUEST )
     
 @api_view(['POST'])
@@ -146,7 +146,7 @@ def totalTag(request):
     else:
         return Response(
             {'status': 'error', 
-            'message': serializer.errors},
+            'message': json.dumps(serializer.errors)},
             status=status.HTTP_400_BAD_REQUEST )
 
     

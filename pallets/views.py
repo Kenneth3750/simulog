@@ -9,7 +9,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 import math
-
+import json
 
 @api_view(['GET'])
 @permission_classes([AllowAny])
@@ -68,10 +68,10 @@ def getPositions(request):
                 status=status.HTTP_400_BAD_REQUEST )
 
     else:
-        print(serializer.errors)
+        print(json.dumps(serializer.errors))
         return Response(
             {'status': 'error', 
-                'message': serializer.errors},
+                'message': json.dumps(serializer.errors)},
             status=status.HTTP_400_BAD_REQUEST )
 
 @api_view(['POST'])
@@ -89,7 +89,7 @@ def totalPallets(request):
     else:
         return Response(
             {'status': 'error', 
-                'message': serializer.errors},
+                'message': json.dumps(serializer.errors)},
             status=status.HTTP_400_BAD_REQUEST )
     
 
@@ -108,7 +108,7 @@ def palletCost(request):
     else:
         return Response(
             {'status': 'error', 
-                'message': serializer.errors},
+                'message': json.dumps(serializer.errors)},
             status=status.HTTP_400_BAD_REQUEST )
     
 @api_view(['POST'])
@@ -125,5 +125,5 @@ def totalPalletCost(request):
     else:
         return Response(
             {'status': 'error', 
-                'message': serializer.errors},
+                'message': json.dumps(serializer.errors)},
             status=status.HTTP_400_BAD_REQUEST )
