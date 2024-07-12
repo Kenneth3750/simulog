@@ -38,9 +38,6 @@ def getContainer(request, id=None):
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def getContainerPosition(request):
-    request.data['pallet_id'] = int(request.data['pallet_id'])
-    request.data['container_id'] = int(request.data['container_id'])
-    request.data['number_of_pallets'] = int(request.data['number_of_pallets'])
     serializer = positionContainerSerializer(data=request.data)
     
     if serializer.is_valid():
@@ -88,15 +85,6 @@ def getContainerPosition(request):
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def totalContainers(request):
-    try:
-        request.data['number_of_pallets'] = int(request.data['number_of_pallets'])
-        request.data['pallets_per_container'] = int(request.data['pallets_per_container'])
-    except:
-        return Response(
-            {'status': 'error',
-             'message': 'Invalid data: Could not convert to int'},
-            status=status.HTTP_400_BAD_REQUEST)
-
     serializer = TotalContainerSerializer(data=request.data)
     if serializer.is_valid():
         number_of_pallets = serializer.data['number_of_pallets']

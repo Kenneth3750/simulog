@@ -10,16 +10,6 @@ from math import floor, ceil
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def netWeight(request):
-    try:
-        request.data['product_weight'] = float(request.data['product_weight'])
-        request.data['number_of_products'] = float(request.data['number_of_products'])
-        request.data['products_per_pack'] = float(request.data['products_per_pack'])
-        request.data['package_weight'] = float(request.data['package_weight'])
-    except:
-        return Response(
-            {'status': 'error', 
-            'message': 'Invalid data: Could not convert to float'},
-            status=status.HTTP_400_BAD_REQUEST )
     serializer = ProductWeightSerializer(data=request.data)
     if serializer.is_valid():
         product_weight = serializer.validated_data['product_weight']
@@ -55,19 +45,14 @@ def netWeight(request):
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def totalVolumePerProduct(request):
-    try:
-        request.data['number_of_packages'] = float(request.data['number_of_packages'])
-        request.data['box_length'] = float(request.data['box_length'])
-        request.data['box_width'] = float(request.data['box_width'])
-        request.data['box_height'] = float(request.data['box_height'])
-    except:
-        return Response(
-            {'status': 'error', 
-            'message': 'Invalid data: Could not convert to float'},
-            status=status.HTTP_400_BAD)
-
     serializer = TotalVolumeSerializer(data=request.data)
     if serializer.is_valid():
+        if serializer.validated_data['box_width'] > serializer.validated_data['box_length']:
+            return Response(
+                {'status': 'error', 
+                'message': 'Box length must be greater than box width'},
+                status=status.HTTP_400_BAD_REQUEST )
+        
         total_boxes = serializer.validated_data['number_of_packages']
         total_volume = total_boxes * serializer.validated_data['box_length'] * serializer.validated_data['box_width'] * serializer.validated_data['box_height']
         total_volume = round(total_volume, 2)
@@ -84,13 +69,6 @@ def totalVolumePerProduct(request):
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def totalVolume(request):
-    try:
-        request.data['volumes'] = [float(i) for i in request.data['volumes']]
-    except:
-        return Response(
-            {'status': 'error', 
-            'message': 'Invalid data: Could not convert to float'},
-            status=status.HTTP_400_BAD_REQUEST )
     serializer = SumTotalVolumeSerializer(data=request.data)
     if serializer.is_valid():
         total_volume = sum(serializer.validated_data['volumes'])
@@ -108,15 +86,6 @@ def totalVolume(request):
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def totalCostPerProduct(request):
-    try:
-        request.data['number_of_packages'] = float(request.data['number_of_packages'])
-        request.data['value_per_packages'] = float(request.data['value_per_packages'])
-    except:
-        return Response(
-            {'status': 'error', 
-            'message': 'Invalid data: Could not convert to float'},
-            status=status.HTTP_400_BAD_REQUEST )
-
     serializer = TotalCostSerializer(data=request.data)
     if serializer.is_valid():
         total_cost = serializer.validated_data['number_of_packages'] * serializer.validated_data['value_per_packages']
@@ -133,14 +102,6 @@ def totalCostPerProduct(request):
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def totalCost(request):
-    try:
-        request.data['costs'] = [float(i) for i in request.data['costs']]
-    except:
-        return Response(
-            {'status': 'error', 
-            'message': 'Invalid data: Could not convert to float'},
-            status=status.HTTP_400_BAD_REQUEST )
-
     serializer = SumTotalCostSerializer(data=request.data)
     if serializer.is_valid():
         total_cost = sum(serializer.validated_data['costs'])
@@ -157,15 +118,6 @@ def totalCost(request):
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def totalTagPerProduct(request):
-    try:
-        request.data['number_of_packages'] = float(request.data['number_of_packages'])
-        request.data['tag_per_package'] = float(request.data['tag_per_package'])
-        request.data['tag_value'] = float(request.data['tag_value'])
-    except:
-        return Response(
-            {'status': 'error', 
-            'message': 'Invalid data: Could not convert to float'},
-            status=status.HTTP_400_BAD_REQUEST )
     serializer = TotalTagSerializer(data=request.data)
     if serializer.is_valid():
         tag_pack_value = serializer.validated_data['tag_per_package'] * serializer.validated_data['tag_value']
@@ -184,14 +136,6 @@ def totalTagPerProduct(request):
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def totalTag(request):
-    try:
-        request.data['tags'] = [float(i) for i in request.data['tags']]
-    except:
-        return Response(
-            {'status': 'error', 
-            'message': 'Invalid data: Could not convert to float'},
-            status=status.HTTP_400_BAD_REQUEST )
-
     serializer = SumTotalTagSerializer(data=request.data)
     if serializer.is_valid():
         tag_pack_values = serializer.validated_data['tags']

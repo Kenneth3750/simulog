@@ -1,6 +1,10 @@
 from rest_framework import serializers
 from .models import Containers
 
+def greater_than_zero(value):
+    if value <= 0:
+        raise serializers.ValidationError('Value must be greater than zero')
+
 
 class ContainerSerializer(serializers.ModelSerializer):
     name = serializers.CharField(max_length=100)
@@ -16,11 +20,11 @@ class ContainerSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class TotalContainerSerializer(serializers.Serializer):
-    number_of_pallets = serializers.IntegerField()
-    pallets_per_container = serializers.IntegerField()
+    number_of_pallets = serializers.IntegerField(validators=[greater_than_zero])
+    pallets_per_container = serializers.IntegerField(validators=[greater_than_zero])
 
 
 class positionContainerSerializer(serializers.Serializer):
     pallet_id = serializers.IntegerField()
     container_id = serializers.IntegerField()
-    number_of_pallets = serializers.IntegerField()
+    number_of_pallets = serializers.IntegerField(validators=[greater_than_zero])
