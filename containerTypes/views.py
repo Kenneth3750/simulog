@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
+from .functions import optimize_containers
 import json
 import math
 
@@ -87,12 +88,14 @@ def getContainerPosition(request):
 def totalContainers(request):
     serializer = TotalContainerSerializer(data=request.data)
     if serializer.is_valid():
-        number_of_pallets = serializer.data['number_of_pallets']
-        pallets_per_container = serializer.data['pallets_per_container']
-        total_containers = math.ceil(number_of_pallets / pallets_per_container)
+        pallet_id = serializer.data['pallet_id']
+        container_id = serializer.data['container_id']
+        total_pallets = serializer.data['total_pallets']
+        containers, pallets_remaining = optimize_containers(pallet_id, container_id, total_pallets)
         return Response(
             {'status': 'success',
-             'total_containers': total_containers},
+             'total_containers': containers,
+             'pallets_remaining': pallets_remaining},
             status=status.HTTP_200_OK)
     else:
         return Response(

@@ -20,8 +20,9 @@ class ContainerSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class TotalContainerSerializer(serializers.Serializer):
-    number_of_pallets = serializers.IntegerField(validators=[greater_than_zero])
-    pallets_per_container = serializers.IntegerField(validators=[greater_than_zero])
+    pallet_id = serializers.IntegerField(validators=[greater_than_zero])
+    container_id = serializers.IntegerField(validators=[greater_than_zero])
+    total_pallets = serializers.ListField(child=serializers.IntegerField(validators=[greater_than_zero]))
 
 
 class positionContainerSerializer(serializers.Serializer):
