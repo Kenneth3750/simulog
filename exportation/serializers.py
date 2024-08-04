@@ -4,6 +4,9 @@ from rest_framework import serializers
 def validate_positive(value):
     if value < 0:
         raise serializers.ValidationError("This value must be positive")
+def validate_positive_and_zero(value):
+    if value <= 0:
+        raise serializers.ValidationError("This value must be positive and greater than zero")
 
 
 class ExportationPriceSerializer(serializers.Serializer):
@@ -74,3 +77,71 @@ class MobilizationManipulationSerializer(serializers.Serializer):
     destination_manipulation_fee_2 = serializers.FloatField(validators=[validate_positive])
     destination_manipulation_value_1 = serializers.FloatField(validators=[validate_positive])
     destination_manipulation_value_2 = serializers.FloatField(validators=[validate_positive])
+
+
+class CustomsBrokerSerializer(serializers.Serializer):
+    origin_agency_fee = serializers.FloatField(validators=[validate_positive])
+    origin_documentation_fee = serializers.FloatField(validators=[validate_positive])
+    destination_agency_fee = serializers.FloatField(validators=[validate_positive])
+    destination_documentation_fee = serializers.FloatField(validators=[validate_positive])
+    
+    origin_agency_value = serializers.FloatField(validators=[validate_positive])
+    origin_documentation_value = serializers.FloatField(validators=[validate_positive])
+    destination_agency_value = serializers.FloatField(validators=[validate_positive])
+    destination_documentation_value = serializers.FloatField(validators=[validate_positive])
+    
+class AdministrativeSerializer(serializers.Serializer):
+    origin_operation_employees = serializers.IntegerField(validators=[validate_positive])
+    origin_operation_hours = serializers.IntegerField(validators=[validate_positive])
+    origin_operation_hour_salary = serializers.FloatField(validators=[validate_positive])
+    origin_administrative_employees = serializers.IntegerField(validators=[validate_positive])
+    origin_administrative_hours = serializers.IntegerField(validators=[validate_positive])
+    origin_administrative_hour_salary = serializers.FloatField(validators=[validate_positive])
+
+    destination_operation_employees = serializers.IntegerField(validators=[validate_positive])
+    destination_operation_hours = serializers.IntegerField(validators=[validate_positive])
+    destination_operation_hour_salary = serializers.FloatField(validators=[validate_positive])
+    destination_administrative_employees = serializers.IntegerField(validators=[validate_positive])
+    destination_administrative_hours = serializers.IntegerField(validators=[validate_positive])
+    destination_administrative_hour_salary = serializers.FloatField(validators=[validate_positive])
+
+
+    exchange_rate = serializers.FloatField(validators=[validate_positive_and_zero])
+
+
+class OtherCostsSerializer(serializers.Serializer):
+    storage_value = serializers.FloatField(validators=[validate_positive])
+    storage_time = serializers.IntegerField(validators=[validate_positive])
+    storage_units = serializers.IntegerField(validators=[validate_positive])
+
+    mobilization_value = serializers.FloatField(validators=[validate_positive])
+    mobilization_time = serializers.IntegerField(validators=[validate_positive])
+    mobilization_units = serializers.IntegerField(validators=[validate_positive])
+
+    bank_value = serializers.FloatField(validators=[validate_positive])
+    bank_units = serializers.IntegerField(validators=[validate_positive])
+
+    documentation_value = serializers.FloatField(validators=[validate_positive])
+    documentation_units = serializers.IntegerField(validators=[validate_positive])
+
+    unload_value = serializers.FloatField(validators=[validate_positive])
+    unload_units = serializers.IntegerField(validators=[validate_positive])
+
+    advisory_value = serializers.FloatField(validators=[validate_positive])
+    advisory_time = serializers.IntegerField(validators=[validate_positive])
+    advisory_units = serializers.IntegerField(validators=[validate_positive])
+
+    documents_value = serializers.FloatField(validators=[validate_positive])
+    documents_units = serializers.IntegerField(validators=[validate_positive])
+
+    inspections_value = serializers.FloatField(validators=[validate_positive])
+    inspections_units = serializers.IntegerField(validators=[validate_positive])
+
+    weighing_value = serializers.FloatField(validators=[validate_positive])
+    weighing_units = serializers.IntegerField(validators=[validate_positive])
+
+class PortFacilitySerializer(serializers.Serializer):
+    origin_fee = serializers.FloatField(validators=[validate_positive])
+    origin_value = serializers.FloatField(validators=[validate_positive])
+    destination_fee = serializers.FloatField(validators=[validate_positive])
+    destination_value = serializers.FloatField(validators=[validate_positive])

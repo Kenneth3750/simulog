@@ -74,3 +74,107 @@ def manipulation_calculate(origin_manipulation_fee_1, origin_manipulation_fee_2,
     best_origin_option  = min(origin_manipulation_1, origin_manipulation_2)
     best_destination_option =  min(destination_manipulation_1, destination_manipulation_2)
     return origin_manipulation_1, origin_manipulation_2, destination_manipulation_1, destination_manipulation_2, best_origin_option, best_destination_option
+
+def customs_broker_calculator(origin_agency_fee, origin_documentation_fee, destination_agency_fee, destination_documentation_fee, origin_agency_value, origin_documentation_value, destination_agency_value, destination_documentation_value):
+    origin_agency = origin_agency_fee * origin_agency_value
+    origin_documentation = origin_documentation_fee * origin_documentation_value
+    destination_agency = destination_agency_fee * destination_agency_value
+    destination_documentation = destination_documentation_fee * destination_documentation_value
+    total_origin = origin_agency + origin_documentation
+    total_destination = destination_agency + destination_documentation
+    return origin_agency, origin_documentation, destination_agency, destination_documentation, total_origin, total_destination
+
+
+def origin_administrative_costs(origin_operation_employees, origin_operation_hours, origin_operation_hour_salary, origin_administrative_employees, origin_administrative_hours, origin_administrative_hour_salary, exchange_rate):
+    origin_operation_cost = origin_operation_employees * origin_operation_hours * origin_operation_hour_salary
+    origin_administrative_cost = origin_administrative_employees * origin_administrative_hours * origin_administrative_hour_salary
+    total_origin_cost = origin_operation_cost + origin_administrative_cost
+
+    origin_operation_cost_exchange = origin_operation_cost/exchange_rate
+    origin_administrative_cost_exchange = origin_administrative_cost/exchange_rate
+    total_origin_cost_exchange = total_origin_cost/exchange_rate
+    return origin_operation_cost, origin_administrative_cost, total_origin_cost, origin_operation_cost_exchange, origin_administrative_cost_exchange, total_origin_cost_exchange
+
+def destination_administrative_costs(destination_operation_employees, destination_operation_hours, destination_operation_hour_salary, destination_administrative_employees, destination_administrative_hours, destination_administrative_hour_salary, exchange_rate):
+    destination_operation_cost = destination_operation_employees * destination_operation_hours * destination_operation_hour_salary
+    destination_administrative_cost = destination_administrative_employees * destination_administrative_hours * destination_administrative_hour_salary
+    total_destination_cost = destination_operation_cost + destination_administrative_cost
+
+    destination_operation_cost_exchange = destination_operation_cost/exchange_rate
+    destination_administrative_cost_exchange = destination_administrative_cost/exchange_rate
+    total_destination_cost_exchange = total_destination_cost/exchange_rate
+    return destination_operation_cost, destination_administrative_cost, total_destination_cost, destination_operation_cost_exchange, destination_administrative_cost_exchange, total_destination_cost_exchange
+
+def others_storage(storage_value, storage_units, storage_time):
+    total_storage = storage_value * storage_units * storage_time
+    return total_storage
+def others_mobilization(mobilization_value, mobilization_time, mobilization_units):
+    total_mobilization = mobilization_value * mobilization_units * mobilization_time
+    return total_mobilization
+def others_banks(bank_value, bank_units):
+    total_banks = bank_value * bank_units
+    return total_banks
+def others_documentation(documentation_value, documentation_units):
+    total_documentation = documentation_value * documentation_units
+    return total_documentation
+def others_unload(unload_value, unload_units):
+    total_unload = unload_value * unload_units
+    return total_unload
+def others_advisory(advisor_value, advisor_units, advisory_time):
+    total_advisory = advisor_value * advisor_units * advisory_time
+    return total_advisory
+def others_documents(documents_value, documents_units):
+    total_documents = documents_value * documents_units
+    return total_documents
+def others_inspections(inspection_value, inspection_units):
+    total_inspections = inspection_value * inspection_units
+    return total_inspections
+def others_weighing(weighing_value, weighing_units):
+    total_weighing = weighing_value * weighing_units
+    return total_weighing
+
+
+def port_facility_calculator(origin_fee, origin_value, destination_fee, destination_value):
+    origin_port_facility = origin_fee * origin_value
+    destination_port_facility = destination_fee * destination_value
+    return origin_port_facility, destination_port_facility
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
