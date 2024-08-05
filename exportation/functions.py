@@ -139,6 +139,11 @@ def port_facility_calculator(origin_fee, origin_value, destination_fee, destinat
     destination_port_facility = destination_fee * destination_value
     return origin_port_facility, destination_port_facility
 
+def port_operator_calculator(origin_fee, origin_value, destination_fee, destination_value):
+    origin_port_operator = origin_fee * origin_value
+    destination_port_operator = destination_fee * destination_value
+    return origin_port_operator, destination_port_operator
+
 
 
 

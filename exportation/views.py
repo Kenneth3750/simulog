@@ -4,9 +4,10 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework import status
 from .serializers import ExportationPriceSerializer, VolumeSerializer, WeightSerializer, InsuranceSerializer, InspectionSerializer, MobilizationManipulationSerializer, CustomsBrokerSerializer, AdministrativeSerializer
-from .serializers import OtherCostsSerializer,PortFacilitySerializer
+from .serializers import OtherCostsSerializer, PortFacilitySerializer, PortOperatorSerializer
 from .functions import total_volumes, total_weights, local_insurance, international_insurance, destination_insurance, origin_inspection, destination_inspection, mobilization_calculate, manipulation_calculate, customs_broker_calculator, origin_administrative_costs, destination_administrative_costs
 from .functions import others_advisory, others_documents, others_inspections, others_weighing, others_banks, others_documentation, others_mobilization, others_storage, others_unload, port_facility_calculator
+from .functions import port_operator_calculator
 import json
 
 @api_view(['POST'])
@@ -414,3 +415,32 @@ def port_facility(request):
             },
             status=status.HTTP_400_BAD_REQUEST
         )
+    
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def port_operator(request):
+    serializer = PortOperatorSerializer(data=request.data)
+    if serializer.is_valid():
+        origin_fee = serializer.validated_data['origin_fee']
+        origin_value = serializer.validated_data['origin_value']
+        destination_fee = serializer.validated_data['destination_fee']
+        destination_value = serializer.validated_data['destination_value']
+        
+        origin_port_operator, destination_port_operator = port_operator_calculator(origin_fee, origin_value, destination_fee, destination_value)
+        return Response(
+            {
+                'status': 'success',
+                'origin_port_operator': origin_port_operator,
+                'destination_port_operator': destination_port_operator
+            },
+            status=status.HTTP_200_OK
+        )
+    else:
+        return Response(
+            {
+                'status': 'error',
+                'message': json.dumps(serializer.errors)
+            },
+            status=status.HTTP_400_BAD_REQUEST
+        )
+    
