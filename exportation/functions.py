@@ -5,7 +5,7 @@ def total_volumes(pallet_id, container_id, total_product_volume, number_of_palle
     pallet = Pallet.objects.get(id=pallet_id)
     container = Containers.objects.get(id=container_id)
     pallets_volume = pallet.volume * number_of_pallets + total_product_volume
-    containers_volume = container.volume * number_of_containers + total_product_volume
+    containers_volume = container.volume * number_of_containers + pallets_volume
 
     return pallets_volume, containers_volume
 
@@ -143,6 +143,36 @@ def port_operator_calculator(origin_fee, origin_value, destination_fee, destinat
     origin_port_operator = origin_fee * origin_value
     destination_port_operator = destination_fee * destination_value
     return origin_port_operator, destination_port_operator
+
+
+def international_freight_calculator(fee, amount, baf, caf, ams, bl, cs, others):
+    total_basic_fee = fee * amount
+    total = total_basic_fee + baf + caf + ams + bl + cs + others
+    return total_basic_fee, total
+
+
+def factory_cost_calculator(product_cost, exportation_preparation_cost, utility):
+    total = product_cost + exportation_preparation_cost + utility
+    return total
+def fas_value_calculator(local_transport, local_insurance, agency, storage, documents, inspection, manipulation, mobilization, port_facility, factory_value):
+    total = local_transport + local_insurance + agency + storage + documents + inspection + manipulation + mobilization + port_facility + factory_value
+    return total
+
+def fob_value_calculator(administrative_costs, customs_agency, customs_broker, fas_value):
+    total = administrative_costs + customs_agency + customs_broker + fas_value
+    return total
+
+def cfr_cif_value_calculator(international_freight, international_insurance, fob_value):
+    cfr_value = international_freight + fob_value
+    cif_value = cfr_value + international_insurance
+    return cfr_value, cif_value
+
+def policy_calculator(fee_1, value_1, fee_2, value_2):
+    total_1 = fee_1 * value_1
+    total_2 = fee_2 * value_2
+    best_option = min(total_1, total_2)
+    return total_1, total_2, best_option
+
 
 
 

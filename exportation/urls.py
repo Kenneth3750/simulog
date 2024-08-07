@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path
 from .views import exportation_price, weight, volume, insurance, inspection, mobilization_and_manipulation, customs_broker, administrative_costs, other_costs
-from .views import port_facility, port_operator
+from .views import port_facility, port_operator, international_freight, total_cost, policy
 
 
 urlpatterns = [
@@ -16,4 +16,8 @@ urlpatterns = [
     path('other_costs/', other_costs),
     path('port_facility/', port_facility),
     path('port_operator/', port_operator), 
+    path('international_freight/', international_freight),
+    path('policy/', policy),
+    path('total_cost/', total_cost)
+
 ]  

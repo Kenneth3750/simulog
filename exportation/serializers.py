@@ -154,4 +154,51 @@ class PortOperatorSerializer(serializers.Serializer):
 
 
 class InternationalFreightSerializer(serializers.Serializer):
-    
+    fee = serializers.FloatField(validators=[validate_positive])
+    amount = serializers.FloatField(validators=[validate_positive])
+    baf = serializers.FloatField(validators=[validate_positive])
+    caf = serializers.FloatField(validators=[validate_positive])
+    ams = serializers.FloatField(validators=[validate_positive])
+    bl = serializers.FloatField(validators=[validate_positive])
+    cs = serializers.FloatField(validators=[validate_positive])
+    others = serializers.FloatField(validators=[validate_positive])
+
+
+class PolicySerializer(serializers.Serializer):
+    local_fee_1 = serializers.FloatField(validators=[validate_positive])
+    local_fee_2 = serializers.FloatField(validators=[validate_positive])
+    local_value_1 = serializers.FloatField(validators=[validate_positive])
+    local_value_2 = serializers.FloatField(validators=[validate_positive])
+
+    international_fee_1 = serializers.FloatField(validators=[validate_positive])
+    international_fee_2 = serializers.FloatField(validators=[validate_positive])
+    international_value_1 = serializers.FloatField(validators=[validate_positive])
+    international_value_2 = serializers.FloatField(validators=[validate_positive])
+
+    destination_fee_1 = serializers.FloatField(validators=[validate_positive])
+    destination_fee_2 = serializers.FloatField(validators=[validate_positive])
+    destination_value_1 = serializers.FloatField(validators=[validate_positive])
+    destination_value_2 = serializers.FloatField(validators=[validate_positive])
+
+
+class TotalExportationCostSerializer(serializers.Serializer):
+    product_cost = serializers.FloatField(validators=[validate_positive])
+    exportation_preparation_cost = serializers.FloatField(validators=[validate_positive])
+    utility = serializers.FloatField(validators=[validate_positive])
+
+    local_transport = serializers.FloatField(validators=[validate_positive])
+    local_insurance = serializers.FloatField(validators=[validate_positive])
+    agency = serializers.FloatField(validators=[validate_positive])
+    storage = serializers.FloatField(validators=[validate_positive])
+    documents = serializers.FloatField(validators=[validate_positive])
+    inspection = serializers.FloatField(validators=[validate_positive])
+    manipulation = serializers.FloatField(validators=[validate_positive])
+    mobilization = serializers.FloatField(validators=[validate_positive])
+    port_facility = serializers.FloatField(validators=[validate_positive])
+
+    administrative_costs = serializers.FloatField(validators=[validate_positive])
+    customs_agency = serializers.FloatField(validators=[validate_positive])
+    customs_broker = serializers.FloatField(validators=[validate_positive])
+
+    international_freight = serializers.FloatField(validators=[validate_positive])
+    international_insurance = serializers.FloatField(validators=[validate_positive])

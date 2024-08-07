@@ -4,10 +4,10 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework import status
 from .serializers import ExportationPriceSerializer, VolumeSerializer, WeightSerializer, InsuranceSerializer, InspectionSerializer, MobilizationManipulationSerializer, CustomsBrokerSerializer, AdministrativeSerializer
-from .serializers import OtherCostsSerializer, PortFacilitySerializer, PortOperatorSerializer
+from .serializers import OtherCostsSerializer, PortFacilitySerializer, PortOperatorSerializer,  InternationalFreightSerializer, TotalExportationCostSerializer, PolicySerializer
 from .functions import total_volumes, total_weights, local_insurance, international_insurance, destination_insurance, origin_inspection, destination_inspection, mobilization_calculate, manipulation_calculate, customs_broker_calculator, origin_administrative_costs, destination_administrative_costs
 from .functions import others_advisory, others_documents, others_inspections, others_weighing, others_banks, others_documentation, others_mobilization, others_storage, others_unload, port_facility_calculator
-from .functions import port_operator_calculator
+from .functions import port_operator_calculator, international_freight_calculator, factory_cost_calculator, fas_value_calculator, fob_value_calculator, cfr_cif_value_calculator, policy_calculator
 import json
 
 @api_view(['POST'])
@@ -444,3 +444,127 @@ def port_operator(request):
             status=status.HTTP_400_BAD_REQUEST
         )
     
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def international_freight(request):
+    serializer = InternationalFreightSerializer(data=request.data)
+    if serializer.is_valid():
+        fee = serializer.validated_data['fee']
+        amount = serializer.validated_data['amount']
+        baf = serializer.validated_data['baf']
+        caf = serializer.validated_data['caf']
+        ams = serializer.validated_data['ams']
+        bl = serializer.validated_data['bl']
+        cs = serializer.validated_data['cs']
+        others = serializer.validated_data['others']
+        
+        total_basic_fee, total = international_freight_calculator(fee, amount, baf, caf, ams, bl, cs, others)
+        return Response(
+            {
+                'status': 'success',
+                'total_basic_fee': total_basic_fee,
+                'total': total
+            },
+            status=status.HTTP_200_OK
+        )
+    else:
+        return Response(
+            {
+                'status': 'error',
+                'message': json.dumps(serializer.errors)
+            },
+            status=status.HTTP_400_BAD_REQUEST
+        )
+    
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def policy(request):
+    serializer = PolicySerializer(data=request.data)
+    if serializer.is_valid():
+        local_fee_1 = serializer.validated_data['local_fee_1']
+        local_fee_2 = serializer.validated_data['local_fee_2']
+        local_value_1 = serializer.validated_data['local_value_1']
+        local_value_2 = serializer.validated_data['local_value_2']
+        international_fee_1 = serializer.validated_data['international_fee_1']
+        international_fee_2 = serializer.validated_data['international_fee_2']
+        international_value_1 = serializer.validated_data['international_value_1']
+        international_value_2 = serializer.validated_data['international_value_2']
+        destination_fee_1 = serializer.validated_data['destination_fee_1']
+        destination_fee_2 = serializer.validated_data['destination_fee_2']
+        destination_value_1 = serializer.validated_data['destination_value_1']
+        destination_value_2 = serializer.validated_data['destination_value_2']
+
+        local_policy_1, local_policy_2, best_local_option = policy_calculator(local_fee_1, local_value_1, local_fee_2, local_value_2)
+        international_policy_1, international_policy_2, best_international_option = policy_calculator(international_fee_1, international_value_1, international_fee_2, international_value_2)
+        destination_policy_1, destination_policy_2, best_destination_option = policy_calculator(destination_fee_1, destination_value_1, destination_fee_2, destination_value_2)
+        return Response(
+            {
+                "status": "success",
+                "local_policy_1": local_policy_1,
+                "local_policy_2": local_policy_2,
+                "best_local_option": best_local_option,
+                "international_policy_1": international_policy_1,
+                "international_policy_2": international_policy_2,
+                "best_international_option": best_international_option,
+                "destination_policy_1": destination_policy_1,
+                "destination_policy_2": destination_policy_2,
+                "best_destination_option": best_destination_option
+            }
+        )
+    else:
+        return Response(
+            {
+                "status": "error",
+                "message": json.dumps(serializer.errors)
+            },
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def total_cost(request):
+    serializer = TotalExportationCostSerializer(data=request.data)
+    if serializer.is_valid():
+        product_cost = serializer.validated_data['product_cost']
+        exportation_preparation_cost = serializer.validated_data['exportation_preparation_cost']
+        utility = serializer.validated_data['utility']
+        local_transport = serializer.validated_data['local_transport']
+        local_insurance = serializer.validated_data['local_insurance']
+        agency = serializer.validated_data['agency']
+        storage = serializer.validated_data['storage']
+        documents = serializer.validated_data['documents']
+        inspection = serializer.validated_data['inspection']
+        manipulation = serializer.validated_data['manipulation']
+        mobilization = serializer.validated_data['mobilization']
+        port_facility = serializer.validated_data['port_facility']
+        administrative_costs = serializer.validated_data['administrative_costs']
+        customs_agency = serializer.validated_data['customs_agency']
+        customs_broker = serializer.validated_data['customs_broker']
+        international_freight = serializer.validated_data['international_freight']
+        international_insurance = serializer.validated_data['international_insurance']
+
+        factory_cost = factory_cost_calculator(product_cost, exportation_preparation_cost, utility)
+        fas_value = fas_value_calculator(local_transport, local_insurance, agency, storage, documents, inspection, manipulation, mobilization, port_facility, factory_cost)
+        fob_value = fob_value_calculator(administrative_costs, customs_agency, customs_broker, fas_value)
+        cfr_value, cif_value = cfr_cif_value_calculator(international_freight, international_insurance, fob_value)
+
+        return Response(
+            {
+                'status': 'success',
+                'factory_cost': factory_cost,
+                'fas_value': fas_value,
+                'fob_value': fob_value,
+                'cfr_value': cfr_value,
+                'cif_value': cif_value
+            },
+            status=status.HTTP_200_OK
+        )
+    else:
+        return Response(
+            {
+                'status': 'error',
+                'message': json.dumps(serializer.errors)
+            },
+            status=status.HTTP_400_BAD_REQUEST
+        )
