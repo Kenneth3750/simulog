@@ -134,15 +134,18 @@ def others_weighing(weighing_value, weighing_units):
     return total_weighing
 
 
-def port_facility_calculator(origin_fee, origin_value, destination_fee, destination_value):
-    origin_port_facility = origin_fee * origin_value
-    destination_port_facility = destination_fee * destination_value
-    return origin_port_facility, destination_port_facility
+def port_facility_calculator(fee_1, fee_2, value_1, value_2):
+    total_1 = fee_1 * value_1
+    total_2 = fee_2 * value_2
+    best_option = min(total_1, total_2)
+    return total_1, total_2, best_option
 
-def port_operator_calculator(origin_fee, origin_value, destination_fee, destination_value):
-    origin_port_operator = origin_fee * origin_value
-    destination_port_operator = destination_fee * destination_value
-    return origin_port_operator, destination_port_operator
+
+def port_operator_calculator(fee_1, fee_2, value_1, value_2):
+    total_1 = fee_1 * value_1
+    total_2 = fee_2 * value_2
+    best_option = min(total_1, total_2)
+    return total_1, total_2, best_option
 
 
 def international_freight_calculator(fee, amount, baf, caf, ams, bl, cs, others):

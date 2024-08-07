@@ -141,16 +141,24 @@ class OtherCostsSerializer(serializers.Serializer):
     weighing_units = serializers.IntegerField(validators=[validate_positive])
 
 class PortFacilitySerializer(serializers.Serializer):
-    origin_fee = serializers.FloatField(validators=[validate_positive])
-    origin_value = serializers.FloatField(validators=[validate_positive])
-    destination_fee = serializers.FloatField(validators=[validate_positive])
-    destination_value = serializers.FloatField(validators=[validate_positive])
+    origin_fee_1 = serializers.FloatField(validators=[validate_positive])
+    origin_value_1 = serializers.FloatField(validators=[validate_positive])
+    destination_fee_1 = serializers.FloatField(validators=[validate_positive])
+    destination_value_1 = serializers.FloatField(validators=[validate_positive])
+    origin_fee_2 = serializers.FloatField(validators=[validate_positive])
+    origin_value_2 = serializers.FloatField(validators=[validate_positive])
+    destination_fee_2 = serializers.FloatField(validators=[validate_positive])
+    destination_value_2 = serializers.FloatField(validators=[validate_positive])
 
 class PortOperatorSerializer(serializers.Serializer):
-    origin_fee = serializers.FloatField(validators=[validate_positive])
-    origin_value = serializers.FloatField(validators=[validate_positive])
-    destination_fee = serializers.FloatField(validators=[validate_positive])
-    destination_value = serializers.FloatField(validators=[validate_positive])
+    origin_fee_1 = serializers.FloatField(validators=[validate_positive])
+    origin_value_1 = serializers.FloatField(validators=[validate_positive])
+    destination_fee_1 = serializers.FloatField(validators=[validate_positive])
+    destination_value_1 = serializers.FloatField(validators=[validate_positive])
+    origin_fee_2 = serializers.FloatField(validators=[validate_positive])
+    origin_value_2 = serializers.FloatField(validators=[validate_positive])
+    destination_fee_2 = serializers.FloatField(validators=[validate_positive])
+    destination_value_2 = serializers.FloatField(validators=[validate_positive])
 
 
 class InternationalFreightSerializer(serializers.Serializer):

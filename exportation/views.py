@@ -393,17 +393,26 @@ def other_costs(request):
 def port_facility(request):
     serializer = PortFacilitySerializer(data=request.data)
     if serializer.is_valid():
-        origin_fee = serializer.validated_data['origin_fee']
-        origin_value = serializer.validated_data['origin_value']
-        destination_fee = serializer.validated_data['destination_fee']
-        destination_value = serializer.validated_data['destination_value']
+        origin_fee_1 = serializer.validated_data['origin_fee_1']
+        origin_fee_2 = serializer.validated_data['origin_fee_2']
+        origin_value_1 = serializer.validated_data['origin_value_1']
+        origin_value_2 = serializer.validated_data['origin_value_2']
+        destination_fee_1 = serializer.validated_data['destination_fee_1']
+        destination_fee_2 = serializer.validated_data['destination_fee_2']
+        destination_value_1 = serializer.validated_data['destination_value_1']
+        destination_value_2 = serializer.validated_data['destination_value_2']
         
-        origin_port_facility, destination_port_facility = port_facility_calculator(origin_fee, origin_value, destination_fee, destination_value)
+        origin_port_1, origin_port_2, best_origin_option = port_facility_calculator(origin_fee_1, origin_fee_2, origin_value_1, origin_value_2)
+        destination_port_1, destination_port_2, best_destination_option = port_facility_calculator(destination_fee_1, destination_fee_2, destination_value_1, destination_value_2)
         return Response(
             {
                 'status': 'success',
-                'origin_port_facility': origin_port_facility,
-                'destination_port_facility': destination_port_facility
+                'origin_port_1': origin_port_1,
+                'origin_port_2': origin_port_2,
+                'best_origin_option': best_origin_option,
+                'destination_port_1': destination_port_1,
+                'destination_port_2': destination_port_2,
+                'best_destination_option': best_destination_option
             },
             status=status.HTTP_200_OK
         )
@@ -421,17 +430,26 @@ def port_facility(request):
 def port_operator(request):
     serializer = PortOperatorSerializer(data=request.data)
     if serializer.is_valid():
-        origin_fee = serializer.validated_data['origin_fee']
-        origin_value = serializer.validated_data['origin_value']
-        destination_fee = serializer.validated_data['destination_fee']
-        destination_value = serializer.validated_data['destination_value']
+        origin_fee_1 = serializer.validated_data['origin_fee_1']
+        origin_fee_2 = serializer.validated_data['origin_fee_2']
+        origin_value_1 = serializer.validated_data['origin_value_1']
+        origin_value_2 = serializer.validated_data['origin_value_2']
+        destination_fee_1 = serializer.validated_data['destination_fee_1']
+        destination_fee_2 = serializer.validated_data['destination_fee_2']
+        destination_value_1 = serializer.validated_data['destination_value_1']
+        destination_value_2 = serializer.validated_data['destination_value_2']
         
-        origin_port_operator, destination_port_operator = port_operator_calculator(origin_fee, origin_value, destination_fee, destination_value)
+        origin_operator_1, origin_operator_2, best_origin_option = port_operator_calculator(origin_fee_1, origin_fee_2, origin_value_1, origin_value_2)
+        destination_operator_1, destination_operator_2, best_destination_option = port_operator_calculator(destination_fee_1, destination_fee_2, destination_value_1, destination_value_2)
         return Response(
             {
                 'status': 'success',
-                'origin_port_operator': origin_port_operator,
-                'destination_port_operator': destination_port_operator
+                'origin_operator_1': origin_operator_1,
+                'origin_operator_2': origin_operator_2,
+                'best_origin_option': best_origin_option,
+                'destination_operator_1': destination_operator_1,
+                'destination_operator_2': destination_operator_2,
+                'best_destination_option': best_destination_option
             },
             status=status.HTTP_200_OK
         )
