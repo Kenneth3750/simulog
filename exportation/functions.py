@@ -6,6 +6,8 @@ def total_volumes(pallet_id, container_id, total_product_volume, number_of_palle
     container = Containers.objects.get(id=container_id)
     pallets_volume = pallet.volume * number_of_pallets + total_product_volume
     containers_volume = container.volume * number_of_containers + pallets_volume
+    pallets_volume = round(pallets_volume, 2)
+    containers_volume = round(containers_volume, 2)
 
     return pallets_volume, containers_volume
 
