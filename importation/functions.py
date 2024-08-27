@@ -60,3 +60,12 @@ def inspection_calculate(fee_1, amount_1, fee_2, amount_2):
     total_2 = fee_2 * amount_2
     best_option = min(total_1, total_2)
     return total_1, total_2, best_option
+
+def customs_broker_calculate(fee_list_1, value_list_1, fee_list_2, value_list_2, documentation):
+    total_list_1 = []
+    total_list_2 = []
+    for i in range(len(fee_list_1)):
+        total_list_1.append(fee_list_1[i] * value_list_1[i])
+        total_list_2.append(fee_list_2[i] * value_list_2[i])
+    total = sum(total_list_1) + sum(total_list_2) + documentation
+    return total_list_1, total_list_2, total

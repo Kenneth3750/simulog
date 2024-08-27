@@ -3,8 +3,8 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework import status
-from .serializers import InternationalFreightSerializer, PolicySerializer, PortOperatorSerializer, MobilizationManipulationSerializer, InspectionSerializer
-from .functions import international_freight_calculator, policy_calculator, port_operator_calculator, transship_calculator, manipulation_calculate, mobilization_calculate, inspection_calculate, port_facility_calculator
+from .serializers import InternationalFreightSerializer, PolicySerializer, PortOperatorSerializer, MobilizationManipulationSerializer, InspectionSerializer, CustomsBrokerSerializer
+from .functions import international_freight_calculator, policy_calculator, port_operator_calculator, transship_calculator, manipulation_calculate, mobilization_calculate, inspection_calculate, port_facility_calculator, customs_broker_calculate
 import json
 
 @api_view(['POST'])
@@ -269,3 +269,46 @@ def inspection(request):
             status=status.HTTP_400_BAD_REQUEST
         )
     
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def customs_broker(request):
+    serializer = CustomsBrokerSerializer(data=request.data)
+    if serializer.is_valid():
+        number_of_products = serializer.validated_data['number_of_products']
+        origin_fee_list_1 = serializer.validated_data['origin_fee_list_1']
+        origin_value_list_1 = serializer.validated_data['origin_value_list_1']
+        origin_fee_list_2 = serializer.validated_data['origin_fee_list_2']
+        origin_value_list_2 = serializer.validated_data['origin_value_list_2']
+        
+        destination_fee_list_1 = serializer.validated_data['destination_fee_list_1']
+        destination_value_list_1 = serializer.validated_data['destination_value_list_1']
+        destination_fee_list_2 = serializer.validated_data['destination_fee_list_2']
+        destination_value_list_2 = serializer.validated_data['destination_value_list_2']
+        
+        origin_documentation = serializer.validated_data['origin_documentation']
+        destination_documentation = serializer.validated_data['destination_documentation']
+
+        list_origin_1, list_origin_2, total_origin = customs_broker_calculate(origin_fee_list_1, origin_value_list_1, origin_fee_list_2, origin_value_list_2, origin_documentation)
+        list_destination_1, list_destination_2, total_destination = customs_broker_calculate(destination_fee_list_1, destination_value_list_1, destination_fee_list_2, destination_value_list_2, destination_documentation)
+
+        return Response(
+            {
+                'status': 'success',
+                'list_origin_1': list_origin_1,
+                'list_origin_2': list_origin_2,
+                'total_origin': total_origin,
+                'list_destination_1': list_destination_1,
+                'list_destination_2': list_destination_2,
+                'total_destination': total_destination,
+            },
+            status=status.HTTP_200_OK
+        )
+    else:
+        return Response(
+            {
+                'status': 'error',
+                'message': json.dumps(serializer.errors)
+            },
+            status=status.HTTP_400_BAD_REQUEST
+        )
+        

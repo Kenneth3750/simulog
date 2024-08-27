@@ -98,6 +98,24 @@ class InspectionSerializer(serializers.Serializer):
     destination_value_1 = serializers.FloatField(validators=[validate_positive])
     destination_value_2 = serializers.FloatField(validators=[validate_positive])
 
+class CustomsBrokerSerializer(serializers.Serializer):
+    number_of_products = serializers.IntegerField(validators=[validate_positive_and_zero])
+    origin_fee_list_1 = serializers.ListField(child=serializers.FloatField(validators=[validate_positive]))
+    origin_value_list_1 = serializers.ListField(child=serializers.FloatField(validators=[validate_positive]))
+
+    origin_fee_list_2 = serializers.ListField(child=serializers.FloatField(validators=[validate_positive]))
+    origin_value_list_2 = serializers.ListField(child=serializers.FloatField(validators=[validate_positive]))
+
+    destination_fee_list_1 = serializers.ListField(child=serializers.FloatField(validators=[validate_positive]))
+    destination_value_list_1 = serializers.ListField(child=serializers.FloatField(validators=[validate_positive]))
+
+    destination_fee_list_2 = serializers.ListField(child=serializers.FloatField(validators=[validate_positive]))
+    destination_value_list_2 = serializers.ListField(child=serializers.FloatField(validators=[validate_positive]))
+
+    origin_documentation = serializers.FloatField(validators=[validate_positive])
+    destination_documentation = serializers.FloatField(validators=[validate_positive])
+
+
 
 
 
