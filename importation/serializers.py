@@ -167,7 +167,35 @@ class AdministrativeSerializer(serializers.Serializer):
 
     exchange_rate = serializers.FloatField(validators=[validate_positive_and_zero])
 
+class OtherCostsSerializer(serializers.Serializer):
+    storage_value = serializers.FloatField(validators=[validate_positive])
+    storage_time = serializers.IntegerField(validators=[validate_positive])
+    storage_units = serializers.IntegerField(validators=[validate_positive])
 
+    bank_value = serializers.FloatField(validators=[validate_positive])
+    bank_units = serializers.IntegerField(validators=[validate_positive])
+
+    documentation_value = serializers.FloatField(validators=[validate_positive])
+    documentation_units = serializers.IntegerField(validators=[validate_positive])
+
+    unload_value = serializers.FloatField(validators=[validate_positive])
+    unload_units = serializers.IntegerField(validators=[validate_positive])
+
+    advisory_value = serializers.FloatField(validators=[validate_positive])
+    advisory_time = serializers.IntegerField(validators=[validate_positive])
+    advisory_units = serializers.IntegerField(validators=[validate_positive])
+
+    documents_value = serializers.FloatField(validators=[validate_positive])
+    documents_units = serializers.IntegerField(validators=[validate_positive])
+
+    inspections_value = serializers.FloatField(validators=[validate_positive])
+    inspections_units = serializers.IntegerField(validators=[validate_positive])
+
+    weighing_value = serializers.FloatField(validators=[validate_positive])
+    weighing_units = serializers.IntegerField(validators=[validate_positive])
+
+    tariff_fee_list = serializers.ListField(child=serializers.FloatField(validators=[validate_positive]))
+    tariff_value_list = serializers.ListField(child=serializers.FloatField(validators=[validate_positive]))
 
 
 

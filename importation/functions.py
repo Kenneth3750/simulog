@@ -129,3 +129,33 @@ def destination_administrative_costs(destination_operation_employees, destinatio
     destination_administrative_cost_exchange = destination_administrative_cost/exchange_rate
     total_destination_cost_exchange = total_destination_cost/exchange_rate
     return destination_operation_cost, destination_administrative_cost, total_destination_cost, destination_operation_cost_exchange, destination_administrative_cost_exchange, total_destination_cost_exchange
+def others_storage(storage_value, storage_units, storage_time):
+    total_storage = storage_value * storage_units * storage_time
+    return total_storage
+def others_banks(bank_value, bank_units):
+    total_banks = bank_value * bank_units
+    return total_banks
+def others_documentation(documentation_value, documentation_units):
+    total_documentation = documentation_value * documentation_units
+    return total_documentation
+def others_unload(unload_value, unload_units):
+    total_unload = unload_value * unload_units
+    return total_unload
+def others_advisory(advisor_value, advisor_units, advisory_time):
+    total_advisory = advisor_value * advisor_units * advisory_time
+    return total_advisory
+def others_documents(documents_value, documents_units):
+    total_documents = documents_value * documents_units
+    return total_documents
+def others_inspections(inspection_value, inspection_units):
+    total_inspections = inspection_value * inspection_units
+    return total_inspections
+def others_weighing(weighing_value, weighing_units):
+    total_weighing = weighing_value * weighing_units
+    return total_weighing
+
+def others_tariff(tariff_fee_list, tariff_value_list):
+    total_tariff = []
+    for i in range(len(tariff_fee_list)):
+        total_tariff.append(tariff_fee_list[i] * tariff_value_list[i])
+    return total_tariff

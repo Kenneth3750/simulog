@@ -5,8 +5,8 @@ from rest_framework.permissions import AllowAny
 from rest_framework import status
 from .serializers import InternationalFreightSerializer, PolicySerializer, PortOperatorSerializer, MobilizationManipulationSerializer, InspectionSerializer, CustomsBrokerSerializer
 from .functions import international_freight_calculator, policy_calculator, port_operator_calculator, transship_calculator, manipulation_calculate, mobilization_calculate, inspection_calculate, port_facility_calculator, customs_broker_calculate
-from .functions import total_volumes, total_weights, local_insurance, international_insurance, destination_insurance, origin_administrative_costs, destination_administrative_costs
-from .serializers import VolumeSerializer, WeightSerializer, InsuranceSerializer, AdministrativeSerializer
+from .functions import total_volumes, total_weights, local_insurance, international_insurance, destination_insurance, origin_administrative_costs, destination_administrative_costs, others_advisory, others_banks, others_documentation, others_inspections, others_storage, others_unload, others_weighing, others_documents, others_tariff
+from .serializers import VolumeSerializer, WeightSerializer, InsuranceSerializer, AdministrativeSerializer, OtherCostsSerializer
 import json
 
 @api_view(['POST'])
@@ -468,4 +468,69 @@ def administrative_costs(request):
                 'message': json.dumps(serializer.errors)
             },
             status=status.HTTP_400_BAD_REQUEST  
+        )
+    
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def other_costs(request):
+    serializer = OtherCostsSerializer(data=request.data)
+    if serializer.is_valid():
+        storage_value = serializer.validated_data['storage_value']
+        storage_units = serializer.validated_data['storage_units']
+        storage_time = serializer.validated_data['storage_time']
+
+        tariff_fee_list = serializer.validated_data['tariff_fee_list']
+        tariff_value_list = serializer.validated_data['tariff_value_list']
+
+        bank_value = serializer.validated_data['bank_value']
+        bank_units = serializer.validated_data['bank_units']
+        documentation_value = serializer.validated_data['documentation_value']
+        documentation_units = serializer.validated_data['documentation_units']
+        unload_value = serializer.validated_data['unload_value']
+        unload_units = serializer.validated_data['unload_units']
+        advisory_value = serializer.validated_data['advisory_value']
+        advisory_units = serializer.validated_data['advisory_units']
+        advisory_time = serializer.validated_data['advisory_time']
+        documents_value = serializer.validated_data['documents_value']
+        documents_units = serializer.validated_data['documents_units']
+        inspections_value = serializer.validated_data['inspections_value']
+        inspections_units = serializer.validated_data['inspections_units']
+        weighing_value = serializer.validated_data['weighing_value']
+        weighing_units = serializer.validated_data['weighing_units']
+
+        total_storage = others_storage(storage_value, storage_units, storage_time)
+        total_bank = others_banks(bank_value, bank_units)
+        total_documentation = others_documentation(documentation_value, documentation_units)
+        total_unload = others_unload(unload_value, unload_units)
+        total_advisory = others_advisory(advisory_value, advisory_units, advisory_time)
+        total_documents = others_documents(documents_value, documents_units)
+        total_inspections = others_inspections(inspections_value, inspections_units)
+        total_weighing = others_weighing(weighing_value, weighing_units)
+        total_others = total_documents + total_inspections + total_weighing
+        tariff_total_list = others_tariff(tariff_fee_list, tariff_value_list)
+
+        return Response(
+            {
+                'status': 'success',
+                'total_storage': total_storage,
+                'total_bank': total_bank,
+                'total_documentation': total_documentation,
+                'total_unload': total_unload,
+                'total_advisory': total_advisory,
+                'total_documents': total_documents,
+                'total_inspections': total_inspections,
+                'total_weighing': total_weighing,
+                'total_others': total_others,
+                'tariff_total_list': tariff_total_list
+            },
+            status=status.HTTP_200_OK
+        )
+    else:
+        return Response(
+            {
+                'status': 'error',
+                'message': json.dumps(serializer.errors)
+            },
+            status=status.HTTP_400_BAD_REQUEST
         )
