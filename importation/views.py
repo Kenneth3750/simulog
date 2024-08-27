@@ -5,6 +5,8 @@ from rest_framework.permissions import AllowAny
 from rest_framework import status
 from .serializers import InternationalFreightSerializer, PolicySerializer, PortOperatorSerializer, MobilizationManipulationSerializer, InspectionSerializer, CustomsBrokerSerializer
 from .functions import international_freight_calculator, policy_calculator, port_operator_calculator, transship_calculator, manipulation_calculate, mobilization_calculate, inspection_calculate, port_facility_calculator, customs_broker_calculate
+from .functions import total_volumes, total_weights, local_insurance, international_insurance, destination_insurance, origin_administrative_costs, destination_administrative_costs
+from .serializers import VolumeSerializer, WeightSerializer, InsuranceSerializer, AdministrativeSerializer
 import json
 
 @api_view(['POST'])
@@ -311,4 +313,159 @@ def customs_broker(request):
             },
             status=status.HTTP_400_BAD_REQUEST
         )
+    
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def volume(request):
+    serializer = VolumeSerializer(data=request.data)
+    if serializer.is_valid():
+        pallet_id = serializer.validated_data['pallet_id']
+        container_id = serializer.validated_data['container_id']
+        number_of_pallets = serializer.validated_data['number_of_pallets']
+        number_of_containers = serializer.validated_data['number_of_containers']
+        total_product_volume = serializer.validated_data['total_product_volume']
+        pallets_volume, containers_volume = total_volumes(pallet_id, container_id, total_product_volume, number_of_pallets, number_of_containers)
         
+        return Response(
+            {
+                'status': 'success',
+                'pallets_volume': pallets_volume,
+                'containers_volume': containers_volume
+            },
+            status=status.HTTP_200_OK
+        )
+    else:
+        return Response(
+            {
+                'status': 'error',
+                'message': json.dumps(serializer.errors)
+            },
+            status=status.HTTP_400_BAD_REQUEST
+        )
+        
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def weight(request):
+    serializer = WeightSerializer(data=request.data)
+    if serializer.is_valid():
+        pallet_id = serializer.validated_data['pallet_id']
+        container_id = serializer.validated_data['container_id']
+        number_of_pallets = serializer.validated_data['number_of_pallets']
+        number_of_containers = serializer.validated_data['number_of_containers']
+        total_product_weight = serializer.validated_data['total_product_weight']
+        fee = serializer.validated_data['fee']
+        pallets_weight, containers_weight, total_freight = total_weights(pallet_id, container_id, total_product_weight, number_of_pallets, number_of_containers, fee)
+        
+        return Response(
+            {
+                'status': 'success',
+                'pallets_weight': pallets_weight,
+                'containers_weight': containers_weight,
+                'total_freight': total_freight
+            },
+            status=status.HTTP_200_OK
+        )
+    else:
+        return Response(
+            {
+                'status': 'error',
+                'message': json.dumps(serializer.errors)
+            },
+            status=status.HTTP_400_BAD_REQUEST
+        )
+    
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def insurance(request):
+    serializer = InsuranceSerializer(data=request.data)
+    if serializer.is_valid():
+        local_fee_1 = serializer.validated_data['local_fee_1']
+        local_fee_2 = serializer.validated_data['local_fee_2']
+        local_value_1 = serializer.validated_data['local_value_1']
+        local_value_2 = serializer.validated_data['local_value_2']
+        international_fee_1 = serializer.validated_data['international_fee_1']
+        international_fee_2 = serializer.validated_data['international_fee_2']
+        international_value_1 = serializer.validated_data['international_value_1']
+        international_value_2 = serializer.validated_data['international_value_2']
+        destination_fee_1 = serializer.validated_data['destination_fee_1']
+        destination_fee_2 = serializer.validated_data['destination_fee_2']
+        destination_value_1 = serializer.validated_data['destination_value_1']
+        destination_value_2 = serializer.validated_data['destination_value_2']
+        
+        local_insurance_1, local_insurance_2, best_local_option = local_insurance(local_fee_1, local_fee_2, local_value_1, local_value_2)
+        international_insurance_1, international_insurance_2, best_international_option = international_insurance(international_fee_1, international_fee_2, international_value_1, international_value_2)
+        destination_insurance_1, destination_insurance_2, best_destination_option = destination_insurance(destination_fee_1, destination_fee_2, destination_value_1, destination_value_2)
+        
+        return Response(
+            {
+                'status': 'success',
+                'local_insurance_1': local_insurance_1,
+                'local_insurance_2': local_insurance_2,
+                'best_local_option': best_local_option,
+                'international_insurance_1': international_insurance_1,
+                'international_insurance_2': international_insurance_2,
+                'best_international_option': best_international_option,
+                'destination_insurance_1': destination_insurance_1,
+                'destination_insurance_2': destination_insurance_2,
+                'best_destination_option': best_destination_option
+            },
+            status=status.HTTP_200_OK
+        )
+    
+    else:
+        return Response(
+            {
+                'status': 'error',
+                'message': json.dumps(serializer.errors)
+            },
+            status=status.HTTP_400_BAD_REQUEST
+        )
+    
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def administrative_costs(request):
+    serializer = AdministrativeSerializer(data=request.data)
+    if serializer.is_valid():
+        origin_operation_employees = serializer.validated_data['origin_operation_employees']
+        origin_operation_hours = serializer.validated_data['origin_operation_hours']
+        origin_operation_hour_salary = serializer.validated_data['origin_operation_hour_salary']
+        origin_administrative_employees = serializer.validated_data['origin_administrative_employees']
+        origin_administrative_hours = serializer.validated_data['origin_administrative_hours']
+        origin_administrative_hour_salary = serializer.validated_data['origin_administrative_hour_salary']
+        destination_operation_employees = serializer.validated_data['destination_operation_employees']
+        destination_operation_hours = serializer.validated_data['destination_operation_hours']
+        destination_operation_hour_salary = serializer.validated_data['destination_operation_hour_salary']
+        destination_administrative_employees = serializer.validated_data['destination_administrative_employees']
+        destination_administrative_hours = serializer.validated_data['destination_administrative_hours']
+        destination_administrative_hour_salary = serializer.validated_data['destination_administrative_hour_salary']
+        exchange_rate = serializer.validated_data['exchange_rate']
+
+        origin_operation_cost, origin_administrative_cost, total_origin_cost, origin_operation_cost_exchange, origin_administrative_cost_exchange, total_origin_cost_exchange = origin_administrative_costs(origin_operation_employees, origin_operation_hours, origin_operation_hour_salary, origin_administrative_employees, origin_administrative_hours, origin_administrative_hour_salary, exchange_rate)
+        destination_operation_cost, destination_administrative_cost, total_destination_cost, destination_operation_cost_exchange, destination_administrative_cost_exchange, total_destination_cost_exchange = destination_administrative_costs(destination_operation_employees, destination_operation_hours, destination_operation_hour_salary, destination_administrative_employees, destination_administrative_hours, destination_administrative_hour_salary, exchange_rate)
+
+        return Response(
+            {
+                'status': 'success',
+                'origin_operation_cost': origin_operation_cost,
+                'origin_administrative_cost': origin_administrative_cost,
+                'total_origin_cost': total_origin_cost,
+                'origin_operation_cost_exchange': origin_operation_cost_exchange,
+                'origin_administrative_cost_exchange': origin_administrative_cost_exchange,
+                'total_origin_cost_exchange': total_origin_cost_exchange,
+                'destination_operation_cost': destination_operation_cost,
+                'destination_administrative_cost': destination_administrative_cost,
+                'total_destination_cost': total_destination_cost,
+                'destination_operation_cost_exchange': destination_operation_cost_exchange,
+                'destination_administrative_cost_exchange': destination_administrative_cost_exchange,
+                'total_destination_cost_exchange': total_destination_cost_exchange
+            },
+            status=status.HTTP_200_OK
+        )
+    else:
+        return Response(
+            {
+                'status': 'error',
+                'message': json.dumps(serializer.errors)
+            },
+            status=status.HTTP_400_BAD_REQUEST  
+        )

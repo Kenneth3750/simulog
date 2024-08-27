@@ -69,3 +69,63 @@ def customs_broker_calculate(fee_list_1, value_list_1, fee_list_2, value_list_2,
         total_list_2.append(fee_list_2[i] * value_list_2[i])
     total = sum(total_list_1) + sum(total_list_2) + documentation
     return total_list_1, total_list_2, total
+
+def total_volumes(pallet_id, container_id, total_product_volume, number_of_pallets, number_of_containers):
+    pallet = Pallet.objects.get(id=pallet_id)
+    container = Containers.objects.get(id=container_id)
+    pallets_volume = pallet.volume * number_of_pallets + total_product_volume
+    containers_volume = container.volume * number_of_containers + pallets_volume
+    pallets_volume = round(pallets_volume, 2)
+    containers_volume = round(containers_volume, 2)
+
+    return pallets_volume, containers_volume
+
+def total_weights(pallet_id, container_id, total_product_weight, number_of_pallets, number_of_containers, fee):
+    pallet = Pallet.objects.get(id=pallet_id)
+    container = Containers.objects.get(id=container_id)
+    pallets_weight = pallet.weight * number_of_pallets + total_product_weight
+    containers_weight = container.weight * 1000 * number_of_containers + pallets_weight
+    total_freight = pallets_weight * fee
+
+    return pallets_weight, containers_weight, total_freight
+    
+def local_insurance(local_fee_1, local_fee_2, local_value_1, local_value_2):
+    local_insurance_1 = local_fee_1 * local_value_1
+    local_insurance_2 = local_fee_2 * local_value_2
+    best_option  = min(local_insurance_1, local_insurance_2)
+
+    return local_insurance_1, local_insurance_2, best_option
+
+def international_insurance(international_fee_1, international_fee_2, international_value_1, international_value_2):
+    international_insurance_1 = international_fee_1 * international_value_1
+    international_insurance_2 = international_fee_2 * international_value_2
+    best_option  = min(international_insurance_1, international_insurance_2)
+
+    return international_insurance_1, international_insurance_2, best_option
+
+def destination_insurance(destination_fee_1, destination_fee_2, destination_value_1, destination_value_2):
+    destination_insurance_1 = destination_fee_1 * destination_value_1
+    destination_insurance_2 = destination_fee_2 * destination_value_2
+    best_option  = min(destination_insurance_1, destination_insurance_2)
+
+    return destination_insurance_1, destination_insurance_2, best_option
+
+def origin_administrative_costs(origin_operation_employees, origin_operation_hours, origin_operation_hour_salary, origin_administrative_employees, origin_administrative_hours, origin_administrative_hour_salary, exchange_rate):
+    origin_operation_cost = origin_operation_employees * origin_operation_hours * origin_operation_hour_salary
+    origin_administrative_cost = origin_administrative_employees * origin_administrative_hours * origin_administrative_hour_salary
+    total_origin_cost = origin_operation_cost + origin_administrative_cost
+
+    origin_operation_cost_exchange = origin_operation_cost/exchange_rate
+    origin_administrative_cost_exchange = origin_administrative_cost/exchange_rate
+    total_origin_cost_exchange = total_origin_cost/exchange_rate
+    return origin_operation_cost, origin_administrative_cost, total_origin_cost, origin_operation_cost_exchange, origin_administrative_cost_exchange, total_origin_cost_exchange
+
+def destination_administrative_costs(destination_operation_employees, destination_operation_hours, destination_operation_hour_salary, destination_administrative_employees, destination_administrative_hours, destination_administrative_hour_salary, exchange_rate):
+    destination_operation_cost = destination_operation_employees * destination_operation_hours * destination_operation_hour_salary
+    destination_administrative_cost = destination_administrative_employees * destination_administrative_hours * destination_administrative_hour_salary
+    total_destination_cost = destination_operation_cost + destination_administrative_cost
+
+    destination_operation_cost_exchange = destination_operation_cost/exchange_rate
+    destination_administrative_cost_exchange = destination_administrative_cost/exchange_rate
+    total_destination_cost_exchange = total_destination_cost/exchange_rate
+    return destination_operation_cost, destination_administrative_cost, total_destination_cost, destination_operation_cost_exchange, destination_administrative_cost_exchange, total_destination_cost_exchange

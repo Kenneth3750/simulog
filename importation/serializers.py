@@ -117,12 +117,55 @@ class CustomsBrokerSerializer(serializers.Serializer):
 
 
 
+class VolumeSerializer(serializers.Serializer):
+    pallet_id = serializers.IntegerField()
+    container_id = serializers.IntegerField()
+    number_of_pallets = serializers.IntegerField(validators=[validate_positive])
+    number_of_containers = serializers.IntegerField(validators=[validate_positive])
+    total_product_volume = serializers.FloatField(validators=[validate_positive])
 
 
+class WeightSerializer(serializers.Serializer):
+    pallet_id = serializers.IntegerField()
+    container_id = serializers.IntegerField()
+    number_of_pallets = serializers.IntegerField(validators=[validate_positive])
+    number_of_containers = serializers.IntegerField(validators=[validate_positive])
+    total_product_weight = serializers.FloatField(validators=[validate_positive])
+    fee = serializers.FloatField(validators=[validate_positive])
+
+class InsuranceSerializer(serializers.Serializer):
+    local_fee_1 = serializers.FloatField(validators=[validate_positive])
+    local_fee_2 = serializers.FloatField(validators=[validate_positive])
+    local_value_1 = serializers.FloatField(validators=[validate_positive])
+    local_value_2 = serializers.FloatField(validators=[validate_positive])
+
+    international_fee_1 = serializers.FloatField(validators=[validate_positive])
+    international_fee_2 = serializers.FloatField(validators=[validate_positive])
+    international_value_1 = serializers.FloatField(validators=[validate_positive])
+    international_value_2 = serializers.FloatField(validators=[validate_positive])
+
+    destination_fee_1 = serializers.FloatField(validators=[validate_positive])
+    destination_fee_2 = serializers.FloatField(validators=[validate_positive])
+    destination_value_1 = serializers.FloatField(validators=[validate_positive])
+    destination_value_2 = serializers.FloatField(validators=[validate_positive])
+
+class AdministrativeSerializer(serializers.Serializer):
+    origin_operation_employees = serializers.IntegerField(validators=[validate_positive])
+    origin_operation_hours = serializers.IntegerField(validators=[validate_positive])
+    origin_operation_hour_salary = serializers.FloatField(validators=[validate_positive])
+    origin_administrative_employees = serializers.IntegerField(validators=[validate_positive])
+    origin_administrative_hours = serializers.IntegerField(validators=[validate_positive])
+    origin_administrative_hour_salary = serializers.FloatField(validators=[validate_positive])
+
+    destination_operation_employees = serializers.IntegerField(validators=[validate_positive])
+    destination_operation_hours = serializers.IntegerField(validators=[validate_positive])
+    destination_operation_hour_salary = serializers.FloatField(validators=[validate_positive])
+    destination_administrative_employees = serializers.IntegerField(validators=[validate_positive])
+    destination_administrative_hours = serializers.IntegerField(validators=[validate_positive])
+    destination_administrative_hour_salary = serializers.FloatField(validators=[validate_positive])
 
 
-
-
+    exchange_rate = serializers.FloatField(validators=[validate_positive_and_zero])
 
 
 
