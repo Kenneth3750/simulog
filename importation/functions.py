@@ -159,3 +159,44 @@ def others_tariff(tariff_fee_list, tariff_value_list):
     for i in range(len(tariff_fee_list)):
         total_tariff.append(tariff_fee_list[i] * tariff_value_list[i])
     return total_tariff
+
+def factory_cost_calculator(product_cost, exportation_preparation_cost, utility):
+    total = product_cost + exportation_preparation_cost + utility
+    return total
+
+def fas_value_calculator(local_transport, local_insurance, agency, storage, documents, inspection, manipulation, mobilization, port_facility, factory_value):
+    total = local_transport + local_insurance + agency + storage + documents + inspection + manipulation + mobilization + port_facility + factory_value
+    return total
+
+def fob_value_calculator(administrative_costs, customs_agency, customs_broker, fas_value):
+    total = administrative_costs + customs_agency + customs_broker + fas_value
+    return total
+
+def cfr_cif_value_calculator(international_freight, international_insurance, fob_value):
+    cfr_value = international_freight + fob_value
+    cif_value = cfr_value + international_insurance
+    return cfr_value, cif_value
+
+def dap_value_calculator(port_operator, mobilization_2, manipulation_2, port_facility_2, local_transport_2, local_insurance_2, cif_value):
+    dap_value = port_operator + mobilization_2 + manipulation_2 + port_facility_2 + local_transport_2 + local_insurance_2 + cif_value
+    return dap_value
+
+def dpu_value_calculator(unload, dap_value):
+    dpu_value = unload + dap_value
+    return dpu_value
+
+def ddp_value_calculator(inspection_2, tariff, agency_2, administrative_costs_2, other_costs):
+    ddp_value = inspection_2 + tariff + agency_2 + administrative_costs_2 + other_costs 
+    return ddp_value
+
+
+
+
+
+
+
+
+
+
+
+

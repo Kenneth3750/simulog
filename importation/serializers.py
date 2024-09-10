@@ -197,7 +197,42 @@ class OtherCostsSerializer(serializers.Serializer):
     tariff_fee_list = serializers.ListField(child=serializers.FloatField(validators=[validate_positive]))
     tariff_value_list = serializers.ListField(child=serializers.FloatField(validators=[validate_positive]))
 
+class TotalImportationCostSerializer(serializers.Serializer):
+    product_cost = serializers.FloatField(validators=[validate_positive])
+    exportation_preparation_cost = serializers.FloatField(validators=[validate_positive])
+    utility = serializers.FloatField(validators=[validate_positive])
 
+    local_transport = serializers.FloatField(validators=[validate_positive])
+    local_insurance = serializers.FloatField(validators=[validate_positive])
+    agency = serializers.FloatField(validators=[validate_positive])
+    storage = serializers.FloatField(validators=[validate_positive])
+    documents = serializers.FloatField(validators=[validate_positive])
+    inspection = serializers.FloatField(validators=[validate_positive])
+    manipulation = serializers.FloatField(validators=[validate_positive])
+    mobilization = serializers.FloatField(validators=[validate_positive])
+    port_facility = serializers.FloatField(validators=[validate_positive])
+
+    administrative_costs = serializers.FloatField(validators=[validate_positive])
+    customs_agency = serializers.FloatField(validators=[validate_positive])
+    customs_broker = serializers.FloatField(validators=[validate_positive])
+
+    international_freight = serializers.FloatField(validators=[validate_positive])
+    international_insurance = serializers.FloatField(validators=[validate_positive])
+
+    port_operator = serializers.FloatField(validators=[validate_positive])
+    mobilization_2 = serializers.FloatField(validators=[validate_positive])
+    manipulation_2 = serializers.FloatField(validators=[validate_positive])
+    port_facility_2 = serializers.FloatField(validators=[validate_positive])
+    local_transport_2 = serializers.FloatField(validators=[validate_positive])
+    local_insurance_2 = serializers.FloatField(validators=[validate_positive])
+
+    unloading = serializers.FloatField(validators=[validate_positive])
+
+    inspection_2 = serializers.FloatField(validators=[validate_positive])
+    tariff = serializers.FloatField(validators=[validate_positive])
+    agency_2 = serializers.FloatField(validators=[validate_positive])
+    administrative_costs_2 = serializers.FloatField(validators=[validate_positive])
+    other_costs = serializers.FloatField(validators=[validate_positive])
 
 
 

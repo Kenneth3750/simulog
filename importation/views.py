@@ -6,7 +6,9 @@ from rest_framework import status
 from .serializers import InternationalFreightSerializer, PolicySerializer, PortOperatorSerializer, MobilizationManipulationSerializer, InspectionSerializer, CustomsBrokerSerializer
 from .functions import international_freight_calculator, policy_calculator, port_operator_calculator, transship_calculator, manipulation_calculate, mobilization_calculate, inspection_calculate, port_facility_calculator, customs_broker_calculate
 from .functions import total_volumes, total_weights, local_insurance, international_insurance, destination_insurance, origin_administrative_costs, destination_administrative_costs, others_advisory, others_banks, others_documentation, others_inspections, others_storage, others_unload, others_weighing, others_documents, others_tariff
-from .serializers import VolumeSerializer, WeightSerializer, InsuranceSerializer, AdministrativeSerializer, OtherCostsSerializer
+from .functions import factory_cost_calculator, fas_value_calculator, fob_value_calculator, cfr_cif_value_calculator, dap_value_calculator, dpu_value_calculator, ddp_value_calculator
+from .serializers import VolumeSerializer, WeightSerializer, InsuranceSerializer, AdministrativeSerializer, OtherCostsSerializer, TotalImportationCostSerializer
+
 import json
 
 @api_view(['POST'])
@@ -534,3 +536,91 @@ def other_costs(request):
             },
             status=status.HTTP_400_BAD_REQUEST
         )
+    
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def total_cost(request):
+    serializer = TotalImportationCostSerializer(data=request.data)
+    if serializer.is_valid():
+        product_cost = serializer.validated_data['product_cost']
+        exportation_preparation_cost = serializer.validated_data['exportation_preparation_cost']
+        utility = serializer.validated_data['utility']
+        local_transport = serializer.validated_data['local_transport']
+        local_insurance = serializer.validated_data['local_insurance']
+        agency = serializer.validated_data['agency']
+        storage = serializer.validated_data['storage']
+        documents = serializer.validated_data['documents']
+        inspection = serializer.validated_data['inspection']
+        manipulation = serializer.validated_data['manipulation']
+        mobilization = serializer.validated_data['mobilization']
+        port_facility = serializer.validated_data['port_facility']
+        administrative_costs = serializer.validated_data['administrative_costs']
+        customs_agency = serializer.validated_data['customs_agency']
+        customs_broker = serializer.validated_data['customs_broker']
+        international_freight = serializer.validated_data['international_freight']
+        international_insurance = serializer.validated_data['international_insurance']
+        port_operator = serializer.validated_data['port_operator']
+        mobilization_2 = serializer.validated_data['mobilization_2']
+        manipulation_2 = serializer.validated_data['manipulation_2']
+        port_facility_2 = serializer.validated_data['port_facility_2']
+        local_transport_2 = serializer.validated_data['local_transport_2']
+        local_insurance_2 = serializer.validated_data['local_insurance_2']
+        unloading = serializer.validated_data['unloading']
+        inspection_2 = serializer.validated_data['inspection_2']
+        tariff = serializer.validated_data['tariff']
+        agency_2 = serializer.validated_data['agency_2']
+        administrative_costs_2 = serializer.validated_data['administrative_costs_2']
+        other_costs = serializer.validated_data['other_costs']
+        
+        factory_cost = factory_cost_calculator(product_cost, exportation_preparation_cost, utility)
+        fas_value = fas_value_calculator(local_transport, local_insurance, agency, storage, documents, inspection, manipulation, mobilization, port_facility, factory_cost)
+        fob_value = fob_value_calculator(administrative_costs, customs_agency, customs_broker, fas_value)
+        cfr_value, cif_value = cfr_cif_value_calculator(international_freight, international_insurance, fob_value)
+        dap_value = dap_value_calculator(port_operator, mobilization_2, manipulation_2, port_facility_2, local_transport_2, local_insurance_2, cif_value)
+        dpu_value = dpu_value_calculator(unloading, dap_value)
+        ddp_value = ddp_value_calculator(inspection_2, tariff, agency_2, administrative_costs_2, other_costs)
+        
+        return Response(
+            {
+                'status': 'success',
+                'factory_cost': factory_cost,
+                'fas_value': fas_value,
+                'fob_value': fob_value,
+                'cfr_value': cfr_value,
+                'cif_value': cif_value,
+                'dap_value': dap_value,
+                'dpu_value': dpu_value,
+                'ddp_value': ddp_value
+            },
+            status=status.HTTP_200_OK
+        )
+    else:
+        return Response(
+            {
+                'status': 'error',
+                'message': json.dumps(serializer.errors)
+            },
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
