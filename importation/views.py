@@ -537,7 +537,7 @@ def other_costs(request):
             status=status.HTTP_400_BAD_REQUEST
         )
     
-@api_view(['GET'])
+@api_view(['POST'])
 @permission_classes([AllowAny])
 def total_cost(request):
     serializer = TotalImportationCostSerializer(data=request.data)
