@@ -571,7 +571,17 @@ def total_cost(request):
         agency_2 = serializer.validated_data['agency_2']
         administrative_costs_2 = serializer.validated_data['administrative_costs_2']
         other_costs = serializer.validated_data['other_costs']
-        
+
+
+        if any(value is None for value in [product_cost, exportation_preparation_cost, utility, local_transport, local_insurance, agency, storage, documents, inspection, manipulation, mobilization, port_facility, administrative_costs, customs_agency, customs_broker, international_freight, international_insurance, port_operator, mobilization_2, manipulation_2, port_facility_2, local_transport_2, local_insurance_2, unloading, inspection_2, tariff, agency_2, administrative_costs_2, other_costs]):
+            return Response(
+            {
+                'status': 'error',
+                'message': 'One or more required fields are missing. Plese complete the whole simulation before generating the pdf.'
+            },
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
         factory_cost = factory_cost_calculator(product_cost, exportation_preparation_cost, utility)
         fas_value = fas_value_calculator(local_transport, local_insurance, agency, storage, documents, inspection, manipulation, mobilization, port_facility, factory_cost)
         fob_value = fob_value_calculator(administrative_costs, customs_agency, customs_broker, fas_value)

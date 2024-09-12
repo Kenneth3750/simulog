@@ -562,6 +562,16 @@ def total_cost(request):
         international_freight = serializer.validated_data['international_freight']
         international_insurance = serializer.validated_data['international_insurance']
 
+
+        if any(value is None for value in [product_cost, exportation_preparation_cost, utility, local_transport, local_insurance, agency, storage, documents, inspection, manipulation, mobilization, port_facility, administrative_costs, customs_agency, customs_broker, international_freight, international_insurance]):
+            return Response(
+                {
+                    'status': 'error',
+                    'message': 'One or more required fields are missing. Plese complete the whole simulation before generating the pdf.'
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
         factory_cost = factory_cost_calculator(product_cost, exportation_preparation_cost, utility)
         fas_value = fas_value_calculator(local_transport, local_insurance, agency, storage, documents, inspection, manipulation, mobilization, port_facility, factory_cost)
         fob_value = fob_value_calculator(administrative_costs, customs_agency, customs_broker, fas_value)
