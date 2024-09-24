@@ -26,6 +26,6 @@ def create_update_list(emails):
         with open(file_path, "w") as f:
             for email in emails:
                 f.write(email + "\n")
-        return True
+        return {"message": "The list of users has been updated"}
     except Exception as e:
-        return False
+        return {"Error": f"The list of users could not be updated: {str(e)}"}

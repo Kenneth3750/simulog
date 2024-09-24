@@ -54,7 +54,8 @@ def users_list(request):
         serializer = UsersListSerializer(data=request.data)
         if serializer.is_valid():
             users = serializer.validated_data['users']
-            if create_update_list(users):
+            result = create_update_list(users)
+            if 'message' in result:
                 return Response(
                     {
                         'status': 'success',
@@ -66,7 +67,7 @@ def users_list(request):
                 return Response(
                     {
                         'status': 'error',
-                        'message': 'An error occurred while updating the list of users'
+                        'message': result['Error']
                     },
                     status=status.HTTP_400_BAD_REQUEST
                 )
