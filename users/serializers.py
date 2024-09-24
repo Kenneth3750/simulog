@@ -9,3 +9,14 @@ class UserEmailSerializer(serializers.Serializer):
         if not is_valid:
             raise serializers.ValidationError('The user does not have authorization to use the application')
         return value
+    
+class UsersListSerializer(serializers.Serializer):
+    users = serializers.ListField(child=serializers.CharField(max_length=200))
+
+
+
+
+
+
+
+
