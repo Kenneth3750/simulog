@@ -185,8 +185,8 @@ def dpu_value_calculator(unload, dap_value):
     dpu_value = unload + dap_value
     return dpu_value
 
-def ddp_value_calculator(inspection_2, tariff, agency_2, administrative_costs_2, other_costs):
-    ddp_value = inspection_2 + tariff + agency_2 + administrative_costs_2 + other_costs 
+def ddp_value_calculator(inspection_2, tariff, agency_2, administrative_costs_2, other_costs, dpu_value):
+    ddp_value = inspection_2 + tariff + agency_2 + administrative_costs_2 + other_costs + dpu_value
     return ddp_value
 
 

@@ -588,7 +588,7 @@ def total_cost(request):
         cfr_value, cif_value = cfr_cif_value_calculator(international_freight, international_insurance, fob_value)
         dap_value = dap_value_calculator(port_operator, mobilization_2, manipulation_2, port_facility_2, local_transport_2, local_insurance_2, cif_value)
         dpu_value = dpu_value_calculator(unloading, dap_value)
-        ddp_value = ddp_value_calculator(inspection_2, tariff, agency_2, administrative_costs_2, other_costs)
+        ddp_value = ddp_value_calculator(inspection_2, tariff, agency_2, administrative_costs_2, other_costs, dpu_value)
         
         return Response(
             {
