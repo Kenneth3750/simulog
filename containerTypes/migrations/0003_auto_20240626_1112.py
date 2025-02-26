@@ -42,9 +42,9 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('containerTypes', '0002_auto_20240626_1109'),
+        ('pallets', '0002_auto_20240626_1107'),  # Añade esta línea
     ]
 
     operations = [
         migrations.RunPython(add_positions),
     ]
-
