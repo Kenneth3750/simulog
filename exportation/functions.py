@@ -157,7 +157,7 @@ def international_freight_calculator(fee, amount, baf, caf, ams, bl, cs, others)
 
 
 def factory_cost_calculator(product_cost, exportation_preparation_cost, utility):
-    total = product_cost + exportation_preparation_cost + utility
+    total = (product_cost + exportation_preparation_cost) * (1+utility)
     return total
 def fas_value_calculator(local_transport, local_insurance, agency, storage, documents, inspection, manipulation, mobilization, port_facility, factory_value):
     total = local_transport + local_insurance + agency + storage + documents + inspection + manipulation + mobilization + port_facility + factory_value

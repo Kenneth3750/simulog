@@ -161,7 +161,7 @@ def others_tariff(tariff_fee_list, tariff_value_list):
     return total_tariff
 
 def factory_cost_calculator(product_cost, exportation_preparation_cost, utility):
-    total = product_cost + exportation_preparation_cost + utility
+    total = (product_cost + exportation_preparation_cost) * (1 + utility)
     return total
 
 def fas_value_calculator(local_transport, local_insurance, agency, storage, documents, inspection, manipulation, mobilization, port_facility, factory_value):
